@@ -5,15 +5,21 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 export default function Mynavbar() {
   return (
-    <Navbar expand="lg" className="bg-body-secondary mx-2">
-      <Navbar.Brand href="#home">
+    <Navbar
+      expand="lg"
+      className="bg-body-secondary"
+      style={{ height: "100px" }}
+    >
+      <Navbar.Brand href="#home" className="ms-2">
         <img
           alt=""
           src="/pikachu.gif"
-          width="30"
+          width="40"
           height="30"
           className="d-inline-block align-top"
         />{" "}
@@ -22,7 +28,7 @@ export default function Mynavbar() {
       <Navbar.Toggle aria-controls="navbarScroll" />
       <Navbar.Collapse id="navbarScroll">
         <Nav
-          className="me-auto my-2 my-lg-0"
+          className=" my-2 my-lg-0"
           style={{ maxHeight: "100px" }}
           navbarScroll
         >
@@ -43,15 +49,34 @@ export default function Mynavbar() {
               </NavDropdown.Item>
             </NavDropdown> */}
         </Nav>
-        <img src="/pokemon.png" width="100" height="40" />
-        <Form className="d-flex">
-          <Form.Control
-            type="search"
-            placeholder="Cerca..."
-            className="me-2"
-            aria-label="Search"
-          />
-          <Button variant="outline-success">Conferma</Button>
+        <div className="mx-auto">
+          <img src="/pokemon.png" width="150" height="60" />
+        </div>
+        <Form className="d-flex align-items-center">
+          <div style={{ position: "relative" }}>
+            <FontAwesomeIcon
+              icon={faMagnifyingGlass}
+              style={{
+                position: "absolute",
+                top: "50%",
+                left: "10px",
+                transform: "translateY(-50%)",
+                color: "#888",
+                pointerEvents: "none",
+                zIndex: 2,
+              }}
+            />
+            <Form.Control
+              type="search"
+              placeholder="Cerca..."
+              aria-label="Search"
+              className="me-2"
+              style={{ paddingLeft: "32px", borderRadius: "20px" }}
+            />
+          </div>
+          <Button variant="outline-success" className="mx-2">
+            Conferma
+          </Button>
         </Form>
       </Navbar.Collapse>
     </Navbar>
