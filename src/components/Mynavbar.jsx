@@ -73,6 +73,21 @@ export default function Mynavbar() {
               className="me-2"
               style={{ paddingLeft: "32px", borderRadius: "20px" }}
             />
+            <div
+              className="list-group position-absolute w-100"
+              style={{ zIndex: 1000 }}
+            >
+              {/* <button
+                key={index}
+                className="list-group-item list-group-item-action"
+                onClick={() => {
+                  setQuery(item);
+                  setFilteredItems([]);
+                }}
+              >
+                ciao
+              </button> */}
+            </div>
           </div>
           <Button variant="outline-success" className="mx-2">
             Conferma
