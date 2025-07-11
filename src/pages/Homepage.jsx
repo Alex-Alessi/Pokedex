@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Card from "react-bootstrap/Card";
 import Badge from "react-bootstrap/Badge";
 
-export default function Homepage() {
+export default function Homepage({ search }) {
   const [pokemon, setPokemon] = useState([]);
   const [typesMap, setTypesMap] = useState({});
 
@@ -49,12 +49,18 @@ export default function Homepage() {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
+  const filteredPokemon = useMemo(() => {
+    return pokemon.filter((p) =>
+      p.name.toLowerCase().includes(search.toLowerCase())
+    );
+  }, [pokemon, search]);
+
   return (
     <>
       {pokemon.length > 0 && (
         <div className="container">
           <div className="row">
-            {pokemon.map((p, index) => {
+            {filteredPokemon.map((p, index) => {
               const id = getIdFromUrl(p.url);
               const types = typesMap[id];
               return (
@@ -73,11 +79,13 @@ export default function Homepage() {
                       <Card.Title>{capitalizeFirstLetter(p.name)}</Card.Title>
                     </Card.Body>
                     {types ? (
-                      types.map((type, i) => (
-                        <Badge key={i} bg="primary" className="me-1">
-                          {type}
-                        </Badge>
-                      ))
+                      <div>
+                        {types.map((type, i) => (
+                          <Badge key={i} bg="primary">
+                            {type}
+                          </Badge>
+                        ))}
+                      </div>
                     ) : (
                       <Badge bg="secondary">Loading...</Badge>
                     )}

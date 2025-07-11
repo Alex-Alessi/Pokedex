@@ -1,5 +1,4 @@
 import Button from "react-bootstrap/Button";
-import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -7,8 +6,25 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { useCallback } from "react";
 
-export default function Mynavbar() {
+export default function Mynavbar({ search, setSearch }) {
+  function debounce(callback, delay) {
+    let timer;
+    return (value) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        callback(value);
+      }, delay);
+    };
+  }
+
+  const debouncedSearch = useCallback(
+    debounce((value) => {
+      setSearch(value);
+    }, 1000),
+    []
+  );
   return (
     <Navbar
       expand="lg"
@@ -71,6 +87,10 @@ export default function Mynavbar() {
               placeholder="Cerca..."
               aria-label="Search"
               className="me-2"
+              value={search}
+              onChange={(e) => {
+                debouncedSearch(e.target.value);
+              }}
               style={{ paddingLeft: "32px", borderRadius: "20px" }}
             />
             <div
