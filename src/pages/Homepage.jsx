@@ -9,7 +9,7 @@ export default function Homepage({ search }) {
   useEffect(() => {
     async function fetchPokemonData() {
       try {
-        const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=1302");
+        const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=20");
         const data = await res.json();
         setPokemon(data.results);
         const ids = data.results.map((p) => getIdFromUrl(p.url));

@@ -6,25 +6,8 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import { useCallback } from "react";
 
 export default function Mynavbar({ search, setSearch }) {
-  function debounce(callback, delay) {
-    let timer;
-    return (value) => {
-      clearTimeout(timer);
-      timer = setTimeout(() => {
-        callback(value);
-      }, delay);
-    };
-  }
-
-  const debouncedSearch = useCallback(
-    debounce((value) => {
-      setSearch(value);
-    }, 1000),
-    []
-  );
   return (
     <Navbar
       expand="lg"
@@ -89,7 +72,7 @@ export default function Mynavbar({ search, setSearch }) {
               className="me-2"
               value={search}
               onChange={(e) => {
-                debouncedSearch(e.target.value);
+                setSearch(e.target.value);
               }}
               style={{ paddingLeft: "32px", borderRadius: "20px" }}
             />
