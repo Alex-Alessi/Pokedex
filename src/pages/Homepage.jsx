@@ -1,10 +1,12 @@
 import { useState, useEffect, useMemo } from "react";
 import Card from "react-bootstrap/Card";
 import Badge from "react-bootstrap/Badge";
+import Modal from "react-bootstrap/Modal";
 
 export default function Homepage({ search }) {
   const [pokemon, setPokemon] = useState([]);
   const [typesMap, setTypesMap] = useState({});
+  const [modalShow, setModalShow] = useState(false);
   const typesColor = [
     { type: "normal", color: "#959795" },
     { type: "fire", color: "#950708" },
@@ -72,7 +74,6 @@ export default function Homepage({ search }) {
   function getTypeColor(type) {
     const typeMinimized = type.toLowerCase();
     const findType = typesColor.find((f) => f.type === typeMinimized);
-    console.log(findType.color);
     return findType.color;
   }
 
@@ -109,7 +110,9 @@ export default function Homepage({ search }) {
                       maxHeight: "450px",
                     }}
                     className="card mt-4 mx-auto"
-                    onClick={() => playCry(id)}
+                    onClick={() => {
+                      setModalShow(true), playCry(id);
+                    }}
                   >
                     <b className="fs-6">#{id}</b>
                     <Card.Img variant="top" src={getImg(id)} alt={p.name} />
@@ -164,6 +167,23 @@ export default function Homepage({ search }) {
           </div>
         </div>
       )}
+      <Modal
+        size="lg"
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">
+            Modal heading
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <h4>Centered Modal</h4>
+          <p>Qui puoi mettere contenuti dettagliati del Pokémon cliccato.</p>
+        </Modal.Body>
+      </Modal>
     </>
   );
 }
