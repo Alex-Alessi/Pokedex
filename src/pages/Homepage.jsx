@@ -5,6 +5,26 @@ import Badge from "react-bootstrap/Badge";
 export default function Homepage({ search }) {
   const [pokemon, setPokemon] = useState([]);
   const [typesMap, setTypesMap] = useState({});
+  const typesColor = [
+    { type: "normal", color: "#959795" },
+    { type: "fire", color: "#950708" },
+    { type: "fighting", color: "#a95500" },
+    { type: "water", color: "#0b54b1" },
+    { type: "flying", color: "#4183c4" },
+    { type: "grass", color: "#1e6b0d" },
+    { type: "poison", color: "#50127d" },
+    { type: "electric", color: "#a37e00" },
+    { type: "ground", color: "#572906" },
+    { type: "psychic", color: "#990e3b" },
+    { type: "rock", color: "#7f7745" },
+    { type: "ice", color: "#34cdf4" },
+    { type: "bug", color: "#8d9c17" },
+    { type: "dragon", color: "#8d9c17" },
+    { type: "ghost", color: "#683968" },
+    { type: "dark", color: "#1d1514" },
+    { type: "steel", color: "#2c6c83" },
+    { type: "fairy", color: "#c73cc7" },
+  ];
 
   useEffect(() => {
     async function fetchPokemonData() {
@@ -55,6 +75,13 @@ export default function Homepage({ search }) {
     );
   }, [pokemon, search]);
 
+  function getTypeColor(type) {
+    const typeMinimized = type.toLowerCase();
+    const findType = typesColor.find((f) => f.type === typeMinimized);
+    console.log(findType.color);
+    return findType.color;
+  }
+
   return (
     <>
       {pokemon.length > 0 && (
@@ -80,11 +107,42 @@ export default function Homepage({ search }) {
                     </Card.Body>
                     {types ? (
                       <div>
-                        {types.map((type, i) => (
-                          <Badge key={i} bg="primary">
-                            {type}
-                          </Badge>
-                        ))}
+                        {types.length === 1 ? (
+                          <span
+                            style={{
+                              backgroundColor: getTypeColor(types[0]),
+                              borderRadius: "0px",
+                              padding: "0.4em 0.6em",
+
+                              fontSize: "0.75rem",
+                              fontWeight: "bold",
+                              color: "#fff",
+                              textTransform: "uppercase",
+                              display: "inline-block",
+                            }}
+                          >
+                            {types[0]}
+                          </span>
+                        ) : (
+                          types.map((type, i) => (
+                            <span
+                              key={i}
+                              style={{
+                                backgroundColor: getTypeColor(type),
+                                borderRadius: "0px",
+                                padding: "0.4em 0.6em",
+
+                                fontSize: "0.75rem",
+                                fontWeight: "bold",
+                                color: "#fff",
+                                textTransform: "uppercase",
+                                display: "inline-block",
+                              }}
+                            >
+                              {type}
+                            </span>
+                          ))
+                        )}
                       </div>
                     ) : (
                       <Badge bg="secondary">Loading...</Badge>
