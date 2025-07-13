@@ -69,12 +69,6 @@ export default function Homepage({ search }) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
-  const filteredPokemon = useMemo(() => {
-    return pokemon.filter((p) =>
-      p.name.toLowerCase().includes(search.toLowerCase())
-    );
-  }, [pokemon, search]);
-
   function getTypeColor(type) {
     const typeMinimized = type.toLowerCase();
     const findType = typesColor.find((f) => f.type === typeMinimized);
@@ -82,6 +76,22 @@ export default function Homepage({ search }) {
     return findType.color;
   }
 
+  function getCries(index) {
+    return `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${index}.ogg`;
+  }
+
+  function playCry(index) {
+    const cryUrl = getCries(index);
+    const audio = new Audio(cryUrl);
+    audio.volume = 0.2;
+    audio.play();
+  }
+
+  const filteredPokemon = useMemo(() => {
+    return pokemon.filter((p) =>
+      p.name.toLowerCase().includes(search.toLowerCase())
+    );
+  }, [pokemon, search]);
   return (
     <>
       {pokemon.length > 0 && (
@@ -99,6 +109,7 @@ export default function Homepage({ search }) {
                       maxHeight: "450px",
                     }}
                     className="card mt-4 mx-auto"
+                    onClick={() => playCry(id)}
                   >
                     <b className="fs-6">#{id}</b>
                     <Card.Img variant="top" src={getImg(id)} alt={p.name} />
@@ -113,7 +124,6 @@ export default function Homepage({ search }) {
                               backgroundColor: getTypeColor(types[0]),
                               borderRadius: "0px",
                               padding: "0.4em 0.6em",
-
                               fontSize: "0.75rem",
                               fontWeight: "bold",
                               color: "#fff",

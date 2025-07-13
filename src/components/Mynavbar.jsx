@@ -20,6 +20,7 @@ export default function Mynavbar({ search, setSearch }) {
       audio.muted = !audio.muted;
       setIsMuted(audio.muted);
       if (audio.paused) {
+        audio.volume = 0.3;
         audio.play();
       }
     }
