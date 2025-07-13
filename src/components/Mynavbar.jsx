@@ -6,8 +6,24 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { faVolumeHigh } from "@fortawesome/free-solid-svg-icons";
+import { faVolumeXmark } from "@fortawesome/free-solid-svg-icons";
+import { useRef, useState } from "react";
 
 export default function Mynavbar({ search, setSearch }) {
+  const audioRef = useRef(null);
+  const [isMuted, setIsMuted] = useState(true);
+
+  function toggleMuted() {
+    const audio = audioRef.current;
+    if (audio) {
+      audio.muted = !audio.muted;
+      setIsMuted(audio.muted);
+      if (audio.paused) {
+        audio.play();
+      }
+    }
+  }
   return (
     <Navbar
       expand="lg"
@@ -37,6 +53,21 @@ export default function Mynavbar({ search, setSearch }) {
           <Nav.Link as={Link} to="/favorites">
             Preferiti
           </Nav.Link>
+
+          <button
+            onClick={toggleMuted}
+            style={{ border: "transparent", backgroundColor: "transparent" }}
+          >
+            {isMuted ? (
+              <FontAwesomeIcon icon={faVolumeHigh} />
+            ) : (
+              <FontAwesomeIcon icon={faVolumeXmark} />
+            )}
+          </button>
+          <audio ref={audioRef} autoPlay muted loop>
+            <source src="soulsilver.mp3" type="audio/mpeg" />
+          </audio>
+
           {/* <NavDropdown title="Link" id="navbarScrollingDropdown">
               <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
               <NavDropdown.Item href="#action4">
