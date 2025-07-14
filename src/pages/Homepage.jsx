@@ -1,12 +1,13 @@
 import { useState, useEffect, useMemo } from "react";
 import Card from "react-bootstrap/Card";
 import Badge from "react-bootstrap/Badge";
-import Modal from "react-bootstrap/Modal";
+import Mymodal from "../components/Mymodal";
 
 export default function Homepage({ search }) {
   const [pokemon, setPokemon] = useState([]);
   const [typesMap, setTypesMap] = useState({});
   const [modalShow, setModalShow] = useState(false);
+  const [pokemonDetail, setPokemonDetail] = useState({});
   const typesColor = [
     { type: "normal", color: "#959795" },
     { type: "fire", color: "#950708" },
@@ -111,7 +112,14 @@ export default function Homepage({ search }) {
                     }}
                     className="card mt-4 mx-auto"
                     onClick={() => {
-                      setModalShow(true), playCry(id);
+                      setModalShow(true),
+                        playCry(id),
+                        setPokemonDetail({
+                          id,
+                          name: capitalizeFirstLetter(p.name),
+                          types,
+                          image: getImg(id),
+                        });
                     }}
                   >
                     <b className="fs-6">#{id}</b>
@@ -167,23 +175,14 @@ export default function Homepage({ search }) {
           </div>
         </div>
       )}
-      <Modal
-        size="lg"
+      <Mymodal
         show={modalShow}
         onHide={() => setModalShow(false)}
-        aria-labelledby="contained-modal-title-vcenter"
-        centered
-      >
-        <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-vcenter">
-            Modal heading
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <h4>Centered Modal</h4>
-          <p>Qui puoi mettere contenuti dettagliati del Pokémon cliccato.</p>
-        </Modal.Body>
-      </Modal>
+        id={pokemonDetail.id}
+        name={pokemonDetail.name}
+        types={pokemonDetail.types}
+        image={pokemonDetail.image}
+      />
     </>
   );
 }
