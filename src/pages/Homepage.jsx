@@ -130,7 +130,16 @@ export default function Homepage({ search, modalShow, setModalShow }) {
                   <Card.Body>
                     <Card.Title>{capitalizeFirstLetter(p.name)}</Card.Title>
                   </Card.Body>
-                  <div>
+                  <div
+                    style={{
+                      borderRadius: "15px",
+                      backgroundColor: "green",
+                      maxWidth: "113px",
+                      overflow: "hidden",
+                      display: "flex",
+                      margin: "0 auto",
+                    }}
+                  >
                     {p.types.map((type, i) => (
                       <span
                         key={i}
@@ -142,7 +151,10 @@ export default function Homepage({ search, modalShow, setModalShow }) {
                           fontWeight: "bold",
                           color: "#fff",
                           textTransform: "uppercase",
-                          display: "inline-block",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          flex: 1,
                         }}
                       >
                         {type}

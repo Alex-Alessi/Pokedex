@@ -35,13 +35,14 @@ export default function Mynavbar({ search, setSearch, modalShow }) {
         transition: "filter 0.3s ease",
       }}
     >
-      <Navbar.Brand href="#home" className="ms-2">
+      <Navbar.Brand href="/" className="ms-2">
         <img
           alt=""
           src="/pikachu.gif"
           width="40"
           height="30"
           className="d-inline-block align-top"
+          href="/"
         />{" "}
         Pokedex
       </Navbar.Brand>
@@ -52,9 +53,15 @@ export default function Mynavbar({ search, setSearch, modalShow }) {
           style={{ maxHeight: "100px" }}
           navbarScroll
         >
-          <Nav.Link as={Link} to="/">
-            Home
-          </Nav.Link>
+          <NavDropdown title="Gen" id="navbarScrollingDropdown">
+            <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
+            <NavDropdown.Item href="#action4">Another action</NavDropdown.Item>
+            <NavDropdown.Divider />
+            <NavDropdown.Item href="#action5">
+              Something else here
+            </NavDropdown.Item>
+          </NavDropdown>
+
           <Nav.Link as={Link} to="/favorites">
             Preferiti
           </Nav.Link>
@@ -64,25 +71,14 @@ export default function Mynavbar({ search, setSearch, modalShow }) {
             style={{ border: "transparent", backgroundColor: "transparent" }}
           >
             {isMuted ? (
-              <FontAwesomeIcon icon={faVolumeHigh} />
-            ) : (
               <FontAwesomeIcon icon={faVolumeXmark} />
+            ) : (
+              <FontAwesomeIcon icon={faVolumeHigh} />
             )}
           </button>
           <audio ref={audioRef} autoPlay muted loop>
             <source src="soulsilver.mp3" type="audio/mpeg" />
           </audio>
-
-          {/* <NavDropdown title="Link" id="navbarScrollingDropdown">
-              <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action4">
-                Another action
-              </NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action5">
-                Something else here
-              </NavDropdown.Item>
-            </NavDropdown> */}
         </Nav>
         <div className="mx-auto">
           <img src="/pokemon.png" width="150" height="60" />
