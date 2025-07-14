@@ -1,11 +1,9 @@
 import { useState, useEffect, useMemo } from "react";
 import Card from "react-bootstrap/Card";
-import Badge from "react-bootstrap/Badge";
 import Mymodal from "../components/Mymodal";
 
 export default function Homepage({ search }) {
   const [pokemon, setPokemon] = useState([]);
-  const [typesMap, setTypesMap] = useState({});
   const [modalShow, setModalShow] = useState(false);
   const [pokemonDetail, setPokemonDetail] = useState({});
   const typesColor = [
@@ -34,23 +32,33 @@ export default function Homepage({ search }) {
       try {
         const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=20");
         const data = await res.json();
-        setPokemon(data.results);
-        const ids = data.results.map((p) => getIdFromUrl(p.url));
 
-        const detailPromises = ids.map((id) =>
-          fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
-            .then((res) => res.json())
-            .then((data) => ({ id, types: data.types.map((t) => t.type.name) }))
+        const detailPromises = data.results.map((p) =>
+          fetch(p.url).then((res) => res.json())
         );
 
         const results = await Promise.all(detailPromises);
 
-        const newTypesMap = {};
-        results.forEach(({ id, types }) => {
-          newTypesMap[id] = types;
-        });
+        const formattedData = results.map((pokemon) => ({
+          id: pokemon.id,
+          name: pokemon.name,
+          types: pokemon.types.map((t) => t.type.name),
+          image: pokemon.sprites.front_default,
+          height: pokemon.height,
+          weight: pokemon.weight,
+          base_experience: pokemon.base_experience,
+          abilities: pokemon.abilities.map((a) => ({
+            name: a.ability.name,
+            is_hidden: a.is_hidden,
+          })),
+          stats: pokemon.stats.map((s) => ({
+            name: s.stat.name,
+            base_stat: s.base_stat,
+          })),
+          cry: `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${pokemon.id}.ogg`,
+        }));
 
-        setTypesMap(newTypesMap);
+        setPokemon(formattedData);
       } catch (err) {
         console.error("Errore durante il fetch:", err);
       }
@@ -58,15 +66,6 @@ export default function Homepage({ search }) {
 
     fetchPokemonData();
   }, []);
-
-  function getIdFromUrl(url) {
-    const parts = url.split("/").filter(Boolean);
-    return parts[parts.length - 1];
-  }
-
-  function getImg(index) {
-    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index}.png`;
-  }
 
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -85,8 +84,10 @@ export default function Homepage({ search }) {
   function playCry(index) {
     const cryUrl = getCries(index);
     const audio = new Audio(cryUrl);
-    audio.volume = 0.2;
-    audio.play();
+    audio.volume = 0.3;
+    audio.play().catch((err) => {
+      console.warn("Errore nel riprodurre il cry:", err);
+    });
   }
 
   const filteredPokemon = useMemo(() => {
@@ -99,90 +100,59 @@ export default function Homepage({ search }) {
       {pokemon.length > 0 && (
         <div className="container">
           <div className="row">
-            {filteredPokemon.map((p, index) => {
-              const id = getIdFromUrl(p.url);
-              const types = typesMap[id];
-              return (
-                <div key={index} className="col-md-4 mb-4">
-                  <Card
-                    style={{
-                      width: "20rem",
-                      cursor: "pointer",
-                      maxHeight: "450px",
-                    }}
-                    className="card mt-4 mx-auto"
-                    onClick={() => {
-                      setModalShow(true),
-                        playCry(id),
-                        setPokemonDetail({
-                          id,
-                          name: capitalizeFirstLetter(p.name),
-                          types,
-                          typeColors: types.map((t) => getTypeColor(t)),
-                          image: getImg(id),
-                        });
-                    }}
-                  >
-                    <b className="fs-6">#{id}</b>
-                    <Card.Img variant="top" src={getImg(id)} alt={p.name} />
-                    <Card.Body>
-                      <Card.Title>{capitalizeFirstLetter(p.name)}</Card.Title>
-                    </Card.Body>
-                    {types ? (
-                      <div>
-                        {types.length === 1 ? (
-                          <span
-                            style={{
-                              backgroundColor: getTypeColor(types[0]),
-                              padding: "0.4em 0.6em",
-                              fontSize: "0.75rem",
-                              fontWeight: "bold",
-                              color: "#fff",
-                              textTransform: "uppercase",
-                              display: "inline-block",
-                            }}
-                          >
-                            {types[0]}
-                          </span>
-                        ) : (
-                          types.map((type, i) => (
-                            <span
-                              key={i}
-                              style={{
-                                backgroundColor: getTypeColor(type),
-                                borderRadius: "0px",
-                                padding: "0.4em 0.6em",
-
-                                fontSize: "0.75rem",
-                                fontWeight: "bold",
-                                color: "#fff",
-                                textTransform: "uppercase",
-                                display: "inline-block",
-                              }}
-                            >
-                              {type}
-                            </span>
-                          ))
-                        )}
-                      </div>
-                    ) : (
-                      <Badge bg="secondary">Loading...</Badge>
-                    )}
-                  </Card>
-                </div>
-              );
-            })}
+            {filteredPokemon.map((p, index) => (
+              <div key={index} className="col-md-4 mb-4">
+                <Card
+                  style={{
+                    width: "20rem",
+                    cursor: "pointer",
+                    maxHeight: "450px",
+                  }}
+                  className="card mt-4 mx-auto"
+                  onClick={() => {
+                    setPokemonDetail({
+                      ...p,
+                      name: capitalizeFirstLetter(p.name),
+                      typeColors: p.types.map((t) => getTypeColor(t)),
+                    });
+                    playCry(p.id);
+                    setModalShow(true);
+                  }}
+                >
+                  <b className="fs-6">#{p.id}</b>
+                  <Card.Img variant="top" src={p.image} alt={p.name} />
+                  <Card.Body>
+                    <Card.Title>{capitalizeFirstLetter(p.name)}</Card.Title>
+                  </Card.Body>
+                  <div>
+                    {p.types.map((type, i) => (
+                      <span
+                        key={i}
+                        style={{
+                          backgroundColor: getTypeColor(type),
+                          borderRadius: "0px",
+                          padding: "0.4em 0.6em",
+                          fontSize: "0.75rem",
+                          fontWeight: "bold",
+                          color: "#fff",
+                          textTransform: "uppercase",
+                          display: "inline-block",
+                        }}
+                      >
+                        {type}
+                      </span>
+                    ))}
+                  </div>
+                </Card>
+              </div>
+            ))}
           </div>
         </div>
       )}
       <Mymodal
         show={modalShow}
         onHide={() => setModalShow(false)}
-        id={pokemonDetail.id}
-        name={pokemonDetail.name}
-        types={pokemonDetail.types}
-        typeColors={pokemonDetail.typeColors}
-        image={pokemonDetail.image}
+        {...pokemonDetail}
       />
     </>
   );

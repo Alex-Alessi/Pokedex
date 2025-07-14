@@ -8,6 +8,11 @@ export default function Mymodal({
   types,
   typeColors,
   image,
+  height,
+  weight,
+  base_experience,
+  abilities,
+  stats,
 }) {
   return (
     <Modal
