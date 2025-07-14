@@ -10,7 +10,7 @@ import { faVolumeHigh } from "@fortawesome/free-solid-svg-icons";
 import { faVolumeXmark } from "@fortawesome/free-solid-svg-icons";
 import { useRef, useState } from "react";
 
-export default function Mynavbar({ search, setSearch }) {
+export default function Mynavbar({ search, setSearch, modalShow }) {
   const audioRef = useRef(null);
   const [isMuted, setIsMuted] = useState(true);
 
@@ -29,7 +29,11 @@ export default function Mynavbar({ search, setSearch }) {
     <Navbar
       expand="lg"
       className="bg-body-secondary"
-      style={{ height: "100px" }}
+      style={{
+        height: "100px",
+        filter: modalShow ? "blur(5px)" : "none",
+        transition: "filter 0.3s ease",
+      }}
     >
       <Navbar.Brand href="#home" className="ms-2">
         <img

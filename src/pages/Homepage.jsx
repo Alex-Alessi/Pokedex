@@ -1,10 +1,10 @@
 import { useState, useEffect, useMemo } from "react";
 import Card from "react-bootstrap/Card";
 import Mymodal from "../components/Mymodal";
+import Mynavbar from "../components/Mynavbar";
 
-export default function Homepage({ search }) {
+export default function Homepage({ search, modalShow, setModalShow }) {
   const [pokemon, setPokemon] = useState([]);
-  const [modalShow, setModalShow] = useState(false);
   const [pokemonDetail, setPokemonDetail] = useState({});
   const typesColor = [
     { type: "normal", color: "#959795" },
@@ -98,7 +98,13 @@ export default function Homepage({ search }) {
   return (
     <>
       {pokemon.length > 0 && (
-        <div className="container">
+        <div
+          className="container"
+          style={{
+            filter: modalShow ? "blur(5px)" : "none",
+            transition: "filter 0.3s ease",
+          }}
+        >
           <div className="row">
             {filteredPokemon.map((p, index) => (
               <div key={index} className="col-md-4 mb-4">

@@ -25,7 +25,7 @@ export default function Mymodal({
       onHide={onHide}
       aria-labelledby="contained-modal-title-vcenter"
       centered
-      style={{ maxHeight: "800px" }}
+      style={{ maxHeight: "800px", marginTop: "20px" }}
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
