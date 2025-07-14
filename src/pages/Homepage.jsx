@@ -118,6 +118,7 @@ export default function Homepage({ search }) {
                           id,
                           name: capitalizeFirstLetter(p.name),
                           types,
+                          typeColors: types.map((t) => getTypeColor(t)),
                           image: getImg(id),
                         });
                     }}
@@ -133,7 +134,6 @@ export default function Homepage({ search }) {
                           <span
                             style={{
                               backgroundColor: getTypeColor(types[0]),
-                              borderRadius: "0px",
                               padding: "0.4em 0.6em",
                               fontSize: "0.75rem",
                               fontWeight: "bold",
@@ -181,6 +181,7 @@ export default function Homepage({ search }) {
         id={pokemonDetail.id}
         name={pokemonDetail.name}
         types={pokemonDetail.types}
+        typeColors={pokemonDetail.typeColors}
         image={pokemonDetail.image}
       />
     </>

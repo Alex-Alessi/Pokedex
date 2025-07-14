@@ -1,6 +1,14 @@
 import Modal from "react-bootstrap/Modal";
 
-export default function Mymodal({ show, onHide, id, name, types, image }) {
+export default function Mymodal({
+  show,
+  onHide,
+  id,
+  name,
+  types,
+  typeColors,
+  image,
+}) {
   return (
     <Modal
       size="lg"
@@ -23,7 +31,28 @@ export default function Mymodal({ show, onHide, id, name, types, image }) {
           alt={name}
           style={{ display: "flex", width: "150px", margin: "0 auto" }}
         />
-        <h4>{types}</h4>
+        {types && typeColors ? (
+          types.map((type, i) => (
+            <span
+              style={{
+                backgroundColor: typeColors[i],
+
+                textAlign: "center",
+                fontSize: "1rem",
+                fontWeight: "bold",
+                color: "#fff",
+                textTransform: "uppercase",
+                display: "inline-block",
+                width: "70px",
+                height: "25px",
+              }}
+            >
+              <p key={i}>{type}</p>
+            </span>
+          ))
+        ) : (
+          <p>Caricamento Tipi...</p>
+        )}
         <p>Qui puoi mettere contenuti dettagliati del Pokémon cliccato.</p>
       </Modal.Body>
     </Modal>
