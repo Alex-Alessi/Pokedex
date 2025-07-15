@@ -25,7 +25,7 @@ export default function Mymodal({
       onHide={onHide}
       aria-labelledby="contained-modal-title-vcenter"
       centered
-      style={{ maxHeight: "800px", marginTop: "20px" }}
+      // style={{ maxHeight: "600px", marginTop: "20px" }}
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
@@ -34,11 +34,15 @@ export default function Mymodal({
           </h1>
         </Modal.Title>
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body style={{ maxHeight: "500px", overflowY: "auto" }}>
         <img
           src={image}
           alt={name}
-          style={{ display: "flex", width: "20rem", margin: "0 auto" }}
+          style={{
+            display: "flex",
+            width: "20rem",
+            margin: "0 auto",
+          }}
         />
         {types && typeColors ? (
           types.map((type, i) => (

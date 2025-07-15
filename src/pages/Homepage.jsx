@@ -30,7 +30,7 @@ export default function Homepage({ search, modalShow, setModalShow }) {
   useEffect(() => {
     async function fetchPokemonData() {
       try {
-        const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=20");
+        const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=30");
         const data = await res.json();
 
         const detailPromises = data.results.map((p) =>
