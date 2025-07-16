@@ -1,10 +1,10 @@
 import "./App.css";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { useState } from "react";
-import Homepage from "./pages/Homepage";
+import Pokedex from "./pages/Pokedex";
 import Favorites from "./pages/Favorites";
 import Mynavbar from "./components/Mynavbar";
-
+import Homepage from "./pages/Homepage";
 function App() {
   const [search, setSearch] = useState("");
   const [modalShow, setModalShow] = useState(false);
@@ -18,10 +18,11 @@ function App() {
       >
         <Mynavbar search={search} setSearch={setSearch} modalShow={modalShow} />
         <Routes>
+          <Route path="/" element={<Homepage />} />
           <Route
-            path="/"
+            path="/pokedex"
             element={
-              <Homepage
+              <Pokedex
                 search={search}
                 modalShow={modalShow}
                 setModalShow={setModalShow}

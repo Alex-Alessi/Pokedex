@@ -1,177 +1,102 @@
-import { useState, useEffect, useMemo } from "react";
-import Card from "react-bootstrap/Card";
-import Mymodal from "../components/Mymodal";
-import Mynavbar from "../components/Mynavbar";
+import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function Homepage({ search, modalShow, setModalShow }) {
-  const [pokemon, setPokemon] = useState([]);
-  const [pokemonDetail, setPokemonDetail] = useState({});
-  const typesColor = [
-    { type: "normal", color: "#959795" },
-    { type: "fire", color: "#950708" },
-    { type: "fighting", color: "#a95500" },
-    { type: "water", color: "#0b54b1" },
-    { type: "flying", color: "#4183c4" },
-    { type: "grass", color: "#1e6b0d" },
-    { type: "poison", color: "#50127d" },
-    { type: "electric", color: "#a37e00" },
-    { type: "ground", color: "#572906" },
-    { type: "psychic", color: "#990e3b" },
-    { type: "rock", color: "#7f7745" },
-    { type: "ice", color: "#34cdf4" },
-    { type: "bug", color: "#8d9c17" },
-    { type: "dragon", color: "#8d9c17" },
-    { type: "ghost", color: "#683968" },
-    { type: "dark", color: "#1d1514" },
-    { type: "steel", color: "#2c6c83" },
-    { type: "fairy", color: "#c73cc7" },
-  ];
+export default function Homepage() {
+  const [isClicked, setIsClicked] = useState(false);
+  const videoRef = useRef(null);
+  const audioRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    async function fetchPokemonData() {
-      try {
-        const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=30");
-        const data = await res.json();
+    const video = videoRef.current;
+    if (!video) return;
 
-        const detailPromises = data.results.map((p) =>
-          fetch(p.url).then((res) => res.json())
-        );
-
-        const results = await Promise.all(detailPromises);
-
-        const formattedData = results.map((pokemon) => ({
-          id: pokemon.id,
-          name: pokemon.name,
-          types: pokemon.types.map((t) => t.type.name),
-          image: pokemon.sprites.front_default,
-          height: pokemon.height,
-          weight: pokemon.weight,
-          base_experience: pokemon.base_experience,
-          abilities: pokemon.abilities.map((a) => ({
-            name: a.ability.name,
-            is_hidden: a.is_hidden,
-          })),
-          stats: pokemon.stats.map((s) => ({
-            name: s.stat.name,
-            base_stat: s.base_stat,
-          })),
-          cry: `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${pokemon.id}.ogg`,
-        }));
-
-        setPokemon(formattedData);
-      } catch (err) {
-        console.error("Errore durante il fetch:", err);
+    const handleTimeUpdate = () => {
+      if (!isClicked && video.currentTime >= 0.7) {
+        video.currentTime = 0;
       }
+    };
+
+    // event listener per controllare il tempo del video
+    video.addEventListener("timeupdate", handleTimeUpdate);
+
+    // smonta l'event listener
+    return () => {
+      video.removeEventListener("timeupdate", handleTimeUpdate);
+    };
+  }, [isClicked]);
+
+  const handleClick = () => {
+    if (!isClicked) {
+      setIsClicked(true);
+      const video = videoRef.current;
+      const audio = audioRef.current;
+      if (video && audio) {
+        video.loop = false;
+        video.currentTime = 0.8;
+        video.play();
+        audio.play();
+      }
+      setTimeout(() => {
+        navigate("/pokedex");
+        setIsClicked(false);
+      }, 3000);
     }
+  };
 
-    fetchPokemonData();
-  }, []);
-
-  function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  }
-
-  function getTypeColor(type) {
-    const typeMinimized = type.toLowerCase();
-    const findType = typesColor.find((f) => f.type === typeMinimized);
-    return findType.color;
-  }
-
-  function getCries(index) {
-    return `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${index}.ogg`;
-  }
-
-  function playCry(index) {
-    const cryUrl = getCries(index);
-    const audio = new Audio(cryUrl);
-    audio.volume = 0.3;
-    audio.play().catch((err) => {
-      console.warn("Errore nel riprodurre il cry:", err);
-    });
-  }
-
-  const filteredPokemon = useMemo(() => {
-    return pokemon.filter((p) =>
-      p.name.toLowerCase().includes(search.toLowerCase())
-    );
-  }, [pokemon, search]);
   return (
-    <>
-      {pokemon.length > 0 && (
-        <div
-          className="container"
-          style={{
-            filter: modalShow ? "blur(5px)" : "none",
-            transition: "filter 0.3s ease",
-          }}
-        >
-          <div className="row">
-            {filteredPokemon.map((p, index) => (
-              <div key={index} className="col-md-4 mb-4">
-                <Card
-                  style={{
-                    width: "20rem",
-                    cursor: "pointer",
-                    maxHeight: "450px",
-                  }}
-                  className="card mt-4 mx-auto"
-                  onClick={() => {
-                    setPokemonDetail({
-                      ...p,
-                      name: capitalizeFirstLetter(p.name),
-                      typeColors: p.types.map((t) => getTypeColor(t)),
-                    });
-                    playCry(p.id);
-                    setModalShow(true);
-                  }}
-                >
-                  <b className="fs-6">#{p.id}</b>
-                  <Card.Img variant="top" src={p.image} alt={p.name} />
-                  <Card.Body>
-                    <Card.Title>{capitalizeFirstLetter(p.name)}</Card.Title>
-                  </Card.Body>
-                  <div
-                    style={{
-                      borderRadius: "15px",
-                      backgroundColor: "green",
-                      maxWidth: "113px",
-                      overflow: "hidden",
-                      display: "flex",
-                      margin: "0 auto",
-                    }}
-                  >
-                    {p.types.map((type, i) => (
-                      <span
-                        key={i}
-                        style={{
-                          backgroundColor: getTypeColor(type),
-                          borderRadius: "0px",
-                          padding: "0.4em 0.6em",
-                          fontSize: "0.75rem",
-                          fontWeight: "bold",
-                          color: "#fff",
-                          textTransform: "uppercase",
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          flex: 1,
-                        }}
-                      >
-                        {type}
-                      </span>
-                    ))}
-                  </div>
-                </Card>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-      <Mymodal
-        show={modalShow}
-        onHide={() => setModalShow(false)}
-        {...pokemonDetail}
+    <div
+      className={isClicked ? "zoomed-in" : ""}
+      style={{
+        position: "fixed",
+        top: "0",
+        left: "0",
+        width: "100vw",
+        height: "100vh",
+        overflow: "hidden",
+        cursor: "pointer",
+        backgroundColor: "#000",
+        transition:
+          "transform 3.7s cubic-bezier(0.65, 0, 0.35, 1), opacity 1.5s ease-out 1.5s",
+        zIndex: "2",
+      }}
+      onClick={handleClick}
+    >
+      <video
+        ref={videoRef}
+        src="/VideoPokemonHomepage.mp4"
+        autoPlay
+        muted
+        loop
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          position: "absolute",
+          top: "0",
+          left: "0",
+          zIndex: "-1",
+        }}
       />
-    </>
+      <audio ref={audioRef}>
+        <source src="pokeballSound.mp3" type="audio/mpeg" />
+      </audio>
+
+      <h1
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "flex-end",
+          height: "90%",
+          color: "white",
+          fontSize: "1.5rem",
+          fontFamily: "sans-serif",
+          textShadow: "2px 2px 4px rgba(0, 0, 0, 0.7)",
+          animation: "pulse 2s infinite",
+        }}
+      >
+        {!isClicked && "Clicca per andare al Pokedex"}
+      </h1>
+    </div>
   );
 }

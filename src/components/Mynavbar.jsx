@@ -94,7 +94,7 @@ export default function Mynavbar({ search, setSearch, modalShow }) {
                 transform: "translateY(-50%)",
                 color: "#888",
                 pointerEvents: "none",
-                zIndex: 2,
+                zIndex: 1,
               }}
             />
             <Form.Control
