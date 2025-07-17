@@ -44,34 +44,58 @@ export default function Mymodal({
             margin: "0 auto",
           }}
         />
-        {types && typeColors ? (
-          types.map((type, i) => (
-            <span
-              key={i}
-              style={{
-                backgroundColor: typeColors[i],
-                textAlign: "center",
-                fontSize: "1rem",
-                fontWeight: "bold",
-                color: "#fff",
-                textTransform: "uppercase",
-                display: "inline-block",
-                width: "70px",
-                height: "25px",
-              }}
-            >
-              <p>{type}</p>
-            </span>
-          ))
-        ) : (
-          <p>Caricamento Tipi...</p>
-        )}
-        <ul>
-          <li>Altezza: {height}</li>
-          <li>Peso: {weight}</li>
-          <li>Exp di base: {base_experience}</li>
-          <li>
-            Abilità:{" "}
+        <div
+          style={{
+            borderRadius: "15px",
+            backgroundColor: "green",
+            maxWidth: "113px",
+            overflow: "hidden",
+            display: "flex",
+            marginBottom: "10px",
+          }}
+        >
+          {types && typeColors ? (
+            types.map((type, i) => (
+              <span
+                key={i}
+                style={{
+                  backgroundColor: typeColors[i],
+                  textAlign: "center",
+                  fontSize: "1rem",
+                  fontWeight: "bold",
+                  color: "#fff",
+                  textTransform: "uppercase",
+                  display: "inline-block",
+                  width: "70px",
+                  height: "25px",
+                }}
+              >
+                <p>{type}</p>
+              </span>
+            ))
+          ) : (
+            <p>Caricamento Tipi...</p>
+          )}
+        </div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+          }}
+        >
+          <p style={{ marginBottom: "-3px" }}>
+            <b>Altezza:</b> {(Number(height) / 10).toFixed(1).replace(".", ",")}{" "}
+            m
+          </p>
+          <p style={{ marginBottom: "-3px" }}>
+            <b>Peso:</b> {(Number(weight) / 10).toFixed(1).replace(".", ",")} kg
+          </p>
+          <p style={{ marginBottom: "-3px" }}>
+            <b>Exp di base:</b> {base_experience} xp
+          </p>
+          <p style={{ marginBottom: "-15px" }}>
+            <b>Abilità:</b>{" "}
             <ul>
               {abilities?.map((a, i) => (
                 <li key={i}>
@@ -80,18 +104,18 @@ export default function Mymodal({
                 </li>
               ))}
             </ul>
-          </li>
-          <li>
-            Statistiche:{" "}
+          </p>
+          <p style={{ marginBottom: "-5px" }}>
+            <b>Statistiche:</b>{" "}
             <ul>
               {stats?.map((s, i) => (
                 <li key={i}>
-                  {capitalizeFirstLetter(s.name)}: {s.base_stat}
+                  <b>{capitalizeFirstLetter(s.name)}:</b> {s.base_stat}
                 </li>
               ))}
             </ul>
-          </li>
-        </ul>
+          </p>
+        </div>
       </Modal.Body>
     </Modal>
   );
