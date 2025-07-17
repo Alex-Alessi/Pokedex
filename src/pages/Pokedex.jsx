@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import Card from "react-bootstrap/Card";
 import Mymodal from "../components/Mymodal";
+import { p } from "motion/react-client";
 
 export default function Pokedex({ search, modalShow, setModalShow }) {
   const [pokemon, setPokemon] = useState([]);
@@ -32,30 +33,51 @@ export default function Pokedex({ search, modalShow, setModalShow }) {
         const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=30");
         const data = await res.json();
 
-        const detailPromises = data.results.map((p) =>
-          fetch(p.url).then((res) => res.json())
-        );
+        const detailPromises = data.results.map(async (p) => {
+          try {
+            const detailRes = await fetch(p.url);
+            const detailData = await detailRes.json();
+
+            const speciesRes = await fetch(detailData.species.url);
+            const speciesData = await speciesRes.json();
+
+            return {
+              ...detailData,
+              eggGroup: speciesData.egg_groups,
+              gen: getGen(speciesData.generation.url),
+              isLegendary: speciesData.is_legendary,
+            };
+          } catch (err) {
+            console.error(err);
+            return null;
+          }
+        });
 
         const results = await Promise.all(detailPromises);
 
-        const formattedData = results.map((pokemon) => ({
-          id: pokemon.id,
-          name: pokemon.name,
-          types: pokemon.types.map((t) => t.type.name),
-          image: pokemon.sprites.front_default,
-          height: pokemon.height,
-          weight: pokemon.weight,
-          base_experience: pokemon.base_experience,
-          abilities: pokemon.abilities.map((a) => ({
-            name: a.ability.name,
-            is_hidden: a.is_hidden,
-          })),
-          stats: pokemon.stats.map((s) => ({
-            name: s.stat.name,
-            base_stat: s.base_stat,
-          })),
-          cry: `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${pokemon.id}.ogg`,
-        }));
+        const formattedData = results
+          .filter((p) => p !== null) //filtro aggiunto per non far crashare il sito in caso di valore nullo
+          .map((pokemon) => ({
+            id: pokemon.id,
+            name: pokemon.name,
+            types: pokemon.types.map((t) => t.type.name),
+            image: pokemon.sprites.front_default,
+            height: pokemon.height,
+            weight: pokemon.weight,
+            base_experience: pokemon.base_experience,
+            abilities: pokemon.abilities.map((a) => ({
+              name: a.ability.name,
+              is_hidden: a.is_hidden,
+            })),
+            stats: pokemon.stats.map((s) => ({
+              name: s.stat.name,
+              base_stat: s.base_stat,
+            })),
+            cry: `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${pokemon.id}.ogg`,
+            eggGroup: pokemon.eggGroup,
+            gen: pokemon.gen,
+            isLegendary: pokemon.isLegendary,
+          }));
 
         setPokemon(formattedData);
       } catch (err) {
@@ -80,6 +102,12 @@ export default function Pokedex({ search, modalShow, setModalShow }) {
     return `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${index}.ogg`;
   }
 
+  function getGen(string) {
+    const arr = string.split("");
+    const filteredArray = arr.filter((f) => f != "/");
+    return filteredArray[filteredArray.length - 1];
+  }
+
   function playCry(index) {
     const cryUrl = getCries(index);
     const audio = new Audio(cryUrl);
@@ -94,6 +122,7 @@ export default function Pokedex({ search, modalShow, setModalShow }) {
       p.name.toLowerCase().includes(search.toLowerCase())
     );
   }, [pokemon, search]);
+
   return (
     <>
       {pokemon.length > 0 && (

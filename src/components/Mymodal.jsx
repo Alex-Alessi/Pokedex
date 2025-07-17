@@ -13,6 +13,7 @@ export default function Mymodal({
   base_experience,
   abilities,
   stats,
+  gen,
 }) {
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -61,7 +62,8 @@ export default function Mymodal({
                 style={{
                   backgroundColor: typeColors[i],
                   textAlign: "center",
-                  fontSize: "1rem",
+                  padding: "0.3em 0.5em",
+                  fontSize: "0.75rem",
                   fontWeight: "bold",
                   color: "#fff",
                   textTransform: "uppercase",
@@ -93,6 +95,10 @@ export default function Mymodal({
           </p>
           <p style={{ marginBottom: "-3px" }}>
             <b>Exp di base:</b> {base_experience} xp
+          </p>
+          <p style={{ marginBottom: "-3px" }}>
+            <b>Generation: </b>
+            {gen}
           </p>
           <p style={{ marginBottom: "-15px" }}>
             <b>Abilità:</b>{" "}
