@@ -30,7 +30,7 @@ export default function Pokedex({ search, modalShow, setModalShow }) {
   useEffect(() => {
     async function fetchPokemonData() {
       try {
-        const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=30");
+        const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=1300");
         const data = await res.json();
 
         const detailPromises = data.results.map(async (p) => {
@@ -161,11 +161,11 @@ export default function Pokedex({ search, modalShow, setModalShow }) {
                   <div
                     style={{
                       borderRadius: "15px",
-                      backgroundColor: "green",
-                      maxWidth: "113px",
+                      maxWidth: "130px",
                       overflow: "hidden",
                       display: "flex",
                       margin: "0 auto",
+                      height: "27px",
                     }}
                   >
                     {p.types.map((type, i) => (

@@ -48,11 +48,11 @@ export default function Mymodal({
         <div
           style={{
             borderRadius: "15px",
-            backgroundColor: "green",
-            maxWidth: "113px",
+            maxWidth: "130px",
             overflow: "hidden",
             display: "flex",
             marginBottom: "10px",
+            height: "27px",
           }}
         >
           {types && typeColors ? (
