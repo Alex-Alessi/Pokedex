@@ -2,7 +2,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
+import Dropdown from "react-bootstrap/Dropdown";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
@@ -10,7 +10,13 @@ import { faVolumeHigh } from "@fortawesome/free-solid-svg-icons";
 import { faVolumeXmark } from "@fortawesome/free-solid-svg-icons";
 import { useRef, useState } from "react";
 
-export default function Mynavbar({ search, setSearch, modalShow }) {
+export default function Mynavbar({
+  search,
+  setSearch,
+  modalShow,
+  selected,
+  setSelected,
+}) {
   const audioRef = useRef(null);
   const [isMuted, setIsMuted] = useState(true);
 
@@ -24,6 +30,19 @@ export default function Mynavbar({ search, setSearch, modalShow }) {
         audio.play();
       }
     }
+  }
+
+  function contieneNumeri(stringa) {
+    return /\d/.test(stringa);
+  }
+
+  function titleDropdown(gen) {
+    if (contieneNumeri(gen)) {
+      const arr = gen.split("");
+      console.log("Gen " + arr[arr.length - 1]);
+      return "Gen " + arr[arr.length - 1];
+    }
+    return "Gen";
   }
   return (
     <Navbar
@@ -53,14 +72,39 @@ export default function Mynavbar({ search, setSearch, modalShow }) {
           style={{ maxHeight: "100px" }}
           navbarScroll
         >
-          <NavDropdown title="Gen" id="navbarScrollingDropdown">
-            <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-            <NavDropdown.Item href="#action4">Another action</NavDropdown.Item>
-            <NavDropdown.Divider />
-            <NavDropdown.Item href="#action5">
-              Something else here
-            </NavDropdown.Item>
-          </NavDropdown>
+          <Dropdown>
+            <Dropdown.Toggle
+              id="dropdown-basic"
+              style={{
+                backgroundColor: "transparent",
+                color: "black",
+                border: "none",
+                marginTop: "3px",
+              }}
+            >
+              {titleDropdown(selected)}
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              <Dropdown.Item onClick={() => setSelected("")}>
+                Tutte le gen
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => setSelected("gen1")}>
+                Gen 1
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => setSelected("gen2")}>
+                Gen 2
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => setSelected("gen3")}>
+                Gen 3
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => setSelected("gen4")}>
+                Gen 4
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => setSelected("gen5")}>
+                Gen 5
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
 
           <Nav.Link as={Link} to="/favorites">
             Preferiti

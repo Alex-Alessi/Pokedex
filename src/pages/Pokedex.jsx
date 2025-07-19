@@ -1,9 +1,8 @@
 import { useState, useEffect, useMemo } from "react";
 import Card from "react-bootstrap/Card";
 import Mymodal from "../components/Mymodal";
-import { p } from "motion/react-client";
 
-export default function Pokedex({ search, modalShow, setModalShow }) {
+export default function Pokedex({ search, modalShow, setModalShow, selected }) {
   const [pokemon, setPokemon] = useState([]);
   const [pokemonDetail, setPokemonDetail] = useState({});
   const typesColor = [
@@ -30,7 +29,7 @@ export default function Pokedex({ search, modalShow, setModalShow }) {
   useEffect(() => {
     async function fetchPokemonData() {
       try {
-        const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=1300");
+        const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=600");
         const data = await res.json();
 
         const detailPromises = data.results.map(async (p) => {

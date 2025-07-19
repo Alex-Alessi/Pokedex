@@ -8,6 +8,7 @@ import Homepage from "./pages/Homepage";
 function App() {
   const [search, setSearch] = useState("");
   const [modalShow, setModalShow] = useState(false);
+  const [selected, setSelected] = useState("");
   return (
     <BrowserRouter>
       <div
@@ -16,7 +17,13 @@ function App() {
           transition: "filter 0.3s ease",
         }}
       >
-        <Mynavbar search={search} setSearch={setSearch} modalShow={modalShow} />
+        <Mynavbar
+          search={search}
+          setSearch={setSearch}
+          modalShow={modalShow}
+          selected={selected}
+          setSelected={setSelected}
+        />
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route
@@ -26,6 +33,7 @@ function App() {
                 search={search}
                 modalShow={modalShow}
                 setModalShow={setModalShow}
+                selected={selected}
               />
             }
           />
