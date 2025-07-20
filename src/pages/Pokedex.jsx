@@ -29,7 +29,7 @@ export default function Pokedex({ search, modalShow, setModalShow, selected }) {
   useEffect(() => {
     async function fetchPokemonData() {
       try {
-        const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=600");
+        const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=300");
         const data = await res.json();
 
         const detailPromises = data.results.map(async (p) => {
@@ -116,11 +116,13 @@ export default function Pokedex({ search, modalShow, setModalShow, selected }) {
     });
   }
 
+  const selectedGen = selected.replace(/\D/g, ""); //serve per estrarre il numero
+
   const filteredPokemon = useMemo(() => {
-    return pokemon.filter((p) =>
-      p.name.toLowerCase().includes(search.toLowerCase())
-    );
-  }, [pokemon, search]);
+    return pokemon
+      .filter((p) => p.name.toLowerCase().includes(search.toLowerCase()))
+      .filter((pkmnGen) => selected === "" || pkmnGen.gen === selectedGen);
+  }, [pokemon, search, selected]);
 
   return (
     <>
