@@ -142,10 +142,30 @@ export default function Pokedex({ search, modalShow, setModalShow, selected }) {
   const endIndex = startIndex + itemsPerPage;
   const currentPokemonPage = filteredPokemon.slice(startIndex, endIndex);
   const totalPages = Math.ceil(filteredPokemon.length / itemsPerPage);
-  let pagesArray = [];
-  for (let i = 1; i <= totalPages; i++) {
-    pagesArray.push(i);
+
+  function getPagesArray(currentPage, totalPages) {
+    const pages = [];
+    const delta = 2; //sono le pagine vicine a quelle correnti
+
+    if (currentPage > 1 + delta) {
+      pages.push(1);
+      if (currentPage > 2 + delta) pages.push("start-ellipsis");
+    }
+
+    for (let i = currentPage - delta; i <= currentPage + delta; i++) {
+      if (i > 1 && i < totalPages) {
+        pages.push(i);
+      }
+    }
+
+    if (currentPage < totalPages - delta) {
+      if (currentPage < totalPages - (delta + 1)) pages.push("end-ellipsis");
+      pages.push(totalPages);
+    }
+
+    return pages;
   }
+  const pagesArray = getPagesArray(currentPage, totalPages);
 
   return (
     <>
@@ -261,15 +281,21 @@ export default function Pokedex({ search, modalShow, setModalShow, selected }) {
               onClick={() => currentPage > 1 && setCurrentPage(currentPage - 1)}
               disabled={currentPage === 1}
             />
-            {pagesArray.map((pageNum) => (
-              <Pagination.Item
-                key={pageNum}
-                active={pageNum === currentPage}
-                onClick={() => setCurrentPage(pageNum)}
-              >
-                {pageNum}
-              </Pagination.Item>
-            ))}
+            {pagesArray.map((page, index) => {
+              if (page === "start-ellipsis" || page === "end-ellipsis") {
+                return <Pagination.Ellipsis key={page + index} disabled />;
+              }
+
+              return (
+                <Pagination.Item
+                  key={page}
+                  active={page === currentPage}
+                  onClick={() => setCurrentPage(page)}
+                >
+                  {page}
+                </Pagination.Item>
+              );
+            })}
             <Pagination.Next
               onClick={() =>
                 currentPage < totalPages && setCurrentPage(currentPage + 1)
