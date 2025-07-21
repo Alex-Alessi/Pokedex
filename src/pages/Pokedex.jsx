@@ -1,6 +1,8 @@
 import { useState, useEffect, useMemo } from "react";
 import Card from "react-bootstrap/Card";
 import Mymodal from "../components/Mymodal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
 
 export default function Pokedex({ search, modalShow, setModalShow, selected }) {
   const [pokemon, setPokemon] = useState([]);
@@ -124,6 +126,13 @@ export default function Pokedex({ search, modalShow, setModalShow, selected }) {
       .filter((pkmnGen) => selected === "" || pkmnGen.gen === selectedGen);
   }, [pokemon, search, selected]);
 
+  function scrollToTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
   return (
     <>
       {pokemon.length > 0 && (
@@ -207,6 +216,22 @@ export default function Pokedex({ search, modalShow, setModalShow, selected }) {
                 </Card>
               </div>
             ))}
+            <button
+              style={{
+                zIndex: "2",
+                position: "fixed",
+                bottom: "0",
+                right: "0",
+                width: "45px",
+                height: "45px",
+                borderRadius: "50%",
+                marginRight: "7px",
+                marginBottom: "6px",
+              }}
+              onClick={scrollToTop}
+            >
+              <FontAwesomeIcon icon={faArrowUp} style={{ color: "#000000" }} />
+            </button>
           </div>
         </div>
       )}
