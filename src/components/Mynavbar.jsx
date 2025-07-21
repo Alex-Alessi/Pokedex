@@ -128,7 +128,7 @@ export default function Mynavbar({
           <img src="/pokemon.png" width="150" height="60" />
         </div>
         <Form className="d-flex align-items-center">
-          <div style={{ position: "relative" }}>
+          <div style={{ position: "relative", marginRight: "10px" }}>
             <FontAwesomeIcon
               icon={faMagnifyingGlass}
               style={{
@@ -150,27 +150,12 @@ export default function Mynavbar({
               onChange={(e) => {
                 setSearch(e.target.value);
               }}
-              style={{ paddingLeft: "32px", borderRadius: "20px" }}
+              style={{
+                paddingLeft: "32px",
+                borderRadius: "20px",
+              }}
             />
-            <div
-              className="list-group position-absolute w-100"
-              style={{ zIndex: 1000 }}
-            >
-              {/* <button
-                key={index}
-                className="list-group-item list-group-item-action"
-                onClick={() => {
-                  setQuery(item);
-                  setFilteredItems([]);
-                }}
-              >
-                ciao
-              </button> */}
-            </div>
           </div>
-          <Button variant="outline-success" className="mx-2">
-            Conferma
-          </Button>
         </Form>
       </Navbar.Collapse>
     </Navbar>
