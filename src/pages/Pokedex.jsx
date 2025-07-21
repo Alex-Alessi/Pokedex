@@ -155,6 +155,20 @@ export default function Pokedex({ search, modalShow, setModalShow, selected }) {
                   }}
                 >
                   <b className="fs-6">#{p.id}</b>
+                  {p.isLegendary ? (
+                    <span
+                      className="rainbow-background"
+                      style={{
+                        borderRadius: "15px",
+                        width: "130px",
+                        margin: "0 auto",
+                      }}
+                    >
+                      Leggendario
+                    </span>
+                  ) : (
+                    ""
+                  )}
                   <Card.Img variant="top" src={p.image} alt={p.name} />
                   <Card.Body>
                     <Card.Title>{capitalizeFirstLetter(p.name)}</Card.Title>
