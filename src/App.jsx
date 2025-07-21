@@ -13,8 +13,24 @@ function App() {
     <BrowserRouter>
       <div
         style={{
+          backgroundImage: 'url("wallpaper.gif")',
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center center",
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100vw",
+          height: "100vh",
+          zIndex: -1,
+        }}
+      ></div>
+      <div
+        style={{
           filter: modalShow ? "blur(5px)" : "none",
           transition: "filter 0.3s ease",
+          position: "relative",
+          zIndex: 0,
         }}
       >
         <Mynavbar
@@ -24,6 +40,7 @@ function App() {
           selected={selected}
           setSelected={setSelected}
         />
+
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route
