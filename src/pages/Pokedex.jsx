@@ -3,10 +3,13 @@ import Card from "react-bootstrap/Card";
 import Mymodal from "../components/Mymodal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
+import Pagination from "react-bootstrap/Pagination";
 
 export default function Pokedex({ search, modalShow, setModalShow, selected }) {
   const [pokemon, setPokemon] = useState([]);
   const [pokemonDetail, setPokemonDetail] = useState({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 50;
   const typesColor = [
     { type: "normal", color: "#959795" },
     { type: "fire", color: "#950708" },
@@ -31,7 +34,7 @@ export default function Pokedex({ search, modalShow, setModalShow, selected }) {
   useEffect(() => {
     async function fetchPokemonData() {
       try {
-        const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=300");
+        const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=1000");
         const data = await res.json();
 
         const detailPromises = data.results.map(async (p) => {
@@ -47,6 +50,7 @@ export default function Pokedex({ search, modalShow, setModalShow, selected }) {
               eggGroup: speciesData.egg_groups,
               gen: getGen(speciesData.generation.url),
               isLegendary: speciesData.is_legendary,
+              isMythical: speciesData.is_mythical,
             };
           } catch (err) {
             console.error(err);
@@ -78,6 +82,7 @@ export default function Pokedex({ search, modalShow, setModalShow, selected }) {
             eggGroup: pokemon.eggGroup,
             gen: pokemon.gen,
             isLegendary: pokemon.isLegendary,
+            isMythical: pokemon.isMythical,
           }));
 
         setPokemon(formattedData);
@@ -133,6 +138,15 @@ export default function Pokedex({ search, modalShow, setModalShow, selected }) {
     });
   }
 
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentPokemonPage = filteredPokemon.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(filteredPokemon.length / itemsPerPage);
+  let pagesArray = [];
+  for (let i = 1; i <= totalPages; i++) {
+    pagesArray.push(i);
+  }
+
   return (
     <>
       {pokemon.length > 0 && (
@@ -144,7 +158,7 @@ export default function Pokedex({ search, modalShow, setModalShow, selected }) {
           }}
         >
           <div className="row">
-            {filteredPokemon.map((p, index) => (
+            {currentPokemonPage.map((p, index) => (
               <div key={index} className="col-md-4 mb-4">
                 <Card
                   style={{
@@ -233,6 +247,27 @@ export default function Pokedex({ search, modalShow, setModalShow, selected }) {
               <FontAwesomeIcon icon={faArrowUp} style={{ color: "#000000" }} />
             </button>
           </div>
+          <Pagination style={{ width: "375px", margin: "10px auto" }}>
+            <Pagination.Prev
+              onClick={() => currentPage > 1 && setCurrentPage(currentPage - 1)}
+              disabled={currentPage === 1}
+            />
+            {pagesArray.map((pageNum) => (
+              <Pagination.Item
+                key={pageNum}
+                active={pageNum === currentPage}
+                onClick={() => setCurrentPage(pageNum)}
+              >
+                {pageNum}
+              </Pagination.Item>
+            ))}
+            <Pagination.Next
+              onClick={() =>
+                currentPage < totalPages && setCurrentPage(currentPage + 1)
+              }
+              disabled={currentPage === totalPages}
+            />
+          </Pagination>
         </div>
       )}
       <Mymodal
