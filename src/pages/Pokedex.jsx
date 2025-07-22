@@ -3,6 +3,7 @@ import Card from "react-bootstrap/Card";
 import Mymodal from "../components/Mymodal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
+import { faStar } from "@fortawesome/free-regular-svg-icons";
 import Pagination from "react-bootstrap/Pagination";
 
 export default function Pokedex({ search, modalShow, setModalShow, selected }) {
@@ -185,6 +186,7 @@ export default function Pokedex({ search, modalShow, setModalShow, selected }) {
                     width: "20rem",
                     cursor: "pointer",
                     maxHeight: "450px",
+                    position: "relative",
                   }}
                   className="card mt-4 mx-auto"
                   onClick={() => {
@@ -197,22 +199,17 @@ export default function Pokedex({ search, modalShow, setModalShow, selected }) {
                     setModalShow(true);
                   }}
                 >
+                  <FontAwesomeIcon
+                    icon={faStar}
+                    style={{
+                      position: "absolute",
+                      top: "10px",
+                      right: "10px",
+                      fontSize: "1.2rem",
+                    }}
+                  />
                   <b className="fs-6">#{p.id}</b>
-                  {/* {p.isLegendary ? (
-                    // <span
-                    //   className="rainbow-background"
-                    //   style={{
-                    //     borderRadius: "15px",
-                    //     width: "130px",
-                    //     margin: "0 auto",
-                    //   }}
-                    // >
-                    //   Leggendario
-                    // </span>
-                    <p className="rainbow-text">Leggendario</p>
-                  ) : (
-                    ""
-                  )} */}
+
                   <Card.Img variant="top" src={p.image} alt={p.name} />
                   <Card.Body>
                     <Card.Title>
