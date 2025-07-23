@@ -1,4 +1,3 @@
-import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -124,9 +123,9 @@ export default function Mynavbar({
             <source src="soulsilver.mp3" type="audio/mpeg" />
           </audio>
         </Nav>
-        <div className="mx-auto">
+        <Link to="/pokedex" className="mx-auto">
           <img src="/pokemon.png" width="150" height="60" />
-        </div>
+        </Link>
         <Form className="d-flex align-items-center">
           <div style={{ position: "relative", marginRight: "10px" }}>
             <FontAwesomeIcon
