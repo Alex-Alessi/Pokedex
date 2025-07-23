@@ -3,7 +3,8 @@ import Card from "react-bootstrap/Card";
 import Mymodal from "../components/Mymodal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
-import { faStar } from "@fortawesome/free-regular-svg-icons";
+import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
+import { faStar as faStarSolid } from "@fortawesome/free-solid-svg-icons";
 import Pagination from "react-bootstrap/Pagination";
 
 export default function Pokedex({ search, modalShow, setModalShow, selected }) {
@@ -11,6 +12,10 @@ export default function Pokedex({ search, modalShow, setModalShow, selected }) {
   const [pokemonDetail, setPokemonDetail] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 50;
+  const [favoriteList, setFavoriteList] = useState(() => {
+    const saved = localStorage.getItem("favorites");
+    return saved ? JSON.parse(saved) : [];
+  });
   const typesColor = [
     { type: "normal", color: "#959795" },
     { type: "fire", color: "#950708" },
@@ -94,6 +99,10 @@ export default function Pokedex({ search, modalShow, setModalShow, selected }) {
 
     fetchPokemonData();
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("favorites", JSON.stringify(favoriteList)); //salva i preferiti e li trasforma in stringa
+  }, [favoriteList]);
 
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -200,12 +209,23 @@ export default function Pokedex({ search, modalShow, setModalShow, selected }) {
                   }}
                 >
                   <FontAwesomeIcon
-                    icon={faStar}
+                    icon={
+                      favoriteList.includes(p.id) ? faStarSolid : faStarRegular
+                    }
                     style={{
                       position: "absolute",
                       top: "10px",
                       right: "10px",
                       fontSize: "1.2rem",
+                      color: "black",
+                    }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setFavoriteList((prev) =>
+                        prev.includes(p.id)
+                          ? prev.filter((f) => f !== p.id)
+                          : [...prev, p.id]
+                      );
                     }}
                   />
                   <b className="fs-6">#{p.id}</b>
