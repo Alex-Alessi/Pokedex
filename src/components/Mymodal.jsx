@@ -42,7 +42,7 @@ export default function Mymodal({
           style={{
             display: "flex",
             width: "20rem",
-            margin: "0 auto",
+            margin: "-40px auto",
           }}
         />
         {types && typeColors ? (
