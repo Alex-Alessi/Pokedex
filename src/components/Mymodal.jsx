@@ -45,17 +45,39 @@ export default function Mymodal({
             margin: "0 auto",
           }}
         />
-        <div
-          style={{
-            borderRadius: "15px",
-            maxWidth: "130px",
-            overflow: "hidden",
-            display: "flex",
-            marginBottom: "10px",
-            height: "27px",
-          }}
-        >
-          {types && typeColors ? (
+        {types && typeColors ? (
+          types.length > 1 ? (
+            <div
+              style={{
+                borderRadius: "15px",
+                maxWidth: "130px",
+                overflow: "hidden",
+                display: "flex",
+                marginBottom: "10px",
+                height: "27px",
+              }}
+            >
+              {types.map((type, i) => (
+                <span
+                  key={i}
+                  style={{
+                    backgroundColor: typeColors[i],
+                    textAlign: "center",
+                    padding: "0.3em 0.5em",
+                    fontSize: "0.75rem",
+                    fontWeight: "bold",
+                    color: "#fff",
+                    textTransform: "uppercase",
+                    display: "inline-block",
+                    width: "70px",
+                    height: "25px",
+                  }}
+                >
+                  {type}
+                </span>
+              ))}
+            </div>
+          ) : (
             types.map((type, i) => (
               <span
                 key={i}
@@ -70,15 +92,16 @@ export default function Mymodal({
                   display: "inline-block",
                   width: "70px",
                   height: "25px",
+                  borderRadius: "15px",
                 }}
               >
-                <p>{type}</p>
+                {type}
               </span>
             ))
-          ) : (
-            <p>Caricamento Tipi...</p>
-          )}
-        </div>
+          )
+        ) : (
+          <p>Caricamento Tipi...</p>
+        )}
         <div
           style={{
             display: "flex",
