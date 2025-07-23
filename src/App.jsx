@@ -54,7 +54,17 @@ function App() {
               />
             }
           />
-          <Route path="/favorites" element={<Favorites />} />
+          <Route
+            path="/favorites"
+            element={
+              <Favorites
+                search={search}
+                modalShow={modalShow}
+                setModalShow={setModalShow}
+                selected={selected}
+              />
+            }
+          />
         </Routes>
       </div>
     </BrowserRouter>
