@@ -1,4 +1,6 @@
 import Modal from "react-bootstrap/Modal";
+import Carousel from "react-bootstrap/Carousel";
+import { useState } from "react";
 
 export default function Mymodal({
   show,
@@ -8,6 +10,9 @@ export default function Mymodal({
   types,
   typeColors,
   image,
+  image2,
+  image3,
+  image4,
   height,
   weight,
   base_experience,
@@ -15,9 +20,22 @@ export default function Mymodal({
   stats,
   gen,
 }) {
+  const [slideIndex, setSlideIndex] = useState(0);
+
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
+
+  function handleSelect(selectedIndex) {
+    setSlideIndex(selectedIndex);
+  }
+
+  const slides = [
+    { img: image, thumb: image },
+    { img: image2, thumb: image2 },
+    { img: image3, thumb: image3 },
+    { img: image4, thumb: image4 },
+  ];
 
   return (
     <Modal
@@ -36,15 +54,49 @@ export default function Mymodal({
         </Modal.Title>
       </Modal.Header>
       <Modal.Body style={{ maxHeight: "500px", overflowY: "auto" }}>
-        <img
-          src={image}
-          alt={name}
+        <Carousel
+          activeIndex={slideIndex}
+          onSelect={handleSelect}
+          fade
+          indicators={false}
+        >
+          {slides.map((slide, index) => (
+            <Carousel.Item key={index}>
+              <img
+                src={slide.img}
+                className="d-block"
+                style={{ width: "20rem", margin: "-40px auto" }}
+              />
+            </Carousel.Item>
+          ))}
+        </Carousel>
+
+        <div
+          className="d-flex justify-content-center mt-3 mb-2 gap-3"
           style={{
-            display: "flex",
-            width: "20rem",
-            margin: "-40px auto",
+            width: "100px",
+            height: "80px",
+            margin: "0 auto",
           }}
-        />
+        >
+          {slides.map((slide, index) => (
+            <img
+              key={index}
+              src={slide.thumb}
+              onClick={() => setSlideIndex(index)}
+              className={`img-thumbnail ${
+                slideIndex === index ? "border-primary" : ""
+              }`}
+              style={{
+                width: "100%",
+                height: "100%",
+                cursor: "pointer",
+                objectFit: "cover",
+              }}
+            />
+          ))}
+        </div>
+
         {types && typeColors ? (
           types.length > 1 ? (
             <div
