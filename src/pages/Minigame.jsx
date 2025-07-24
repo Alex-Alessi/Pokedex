@@ -9,6 +9,7 @@ export default function Minigame({ pokemonList }) {
   const [showPokemon, setShowPokemon] = useState(false);
   const [streak, setStreak] = useState(0);
   const [randomPokemon, setRandomPokemon] = useState(null);
+  const [roundOver, setRoundOver] = useState(false);
 
   const listToUse = pokemonList.length > 0 ? pokemonList : localList;
 
@@ -42,6 +43,7 @@ export default function Minigame({ pokemonList }) {
       setInput("");
       setIndovinato(true);
       setStreak((prev) => prev + 1);
+      setRoundOver(true);
     } else {
       setFeedback("❌ Riprova!");
     }
@@ -99,20 +101,25 @@ export default function Minigame({ pokemonList }) {
                 </form>
                 <p>{feedback}</p>
               </Card.Text>
+              {roundOver && (
+                <button
+                  onClick={() => {
+                    setFeedback("");
+                    setShowPokemon(false);
+                    setInput("");
+                    setRandomPokemon(
+                      listToUse[Math.floor(Math.random() * listToUse.length)]
+                    );
+                    setIndovinato(false);
+                    setRoundOver(false);
+                  }}
+                  className="me-2"
+                >
+                  Gioca di nuovo
+                </button>
+              )}
               <button
-                onClick={() => {
-                  setFeedback("");
-                  setShowPokemon(false);
-                  setInput("");
-                  setRandomPokemon(
-                    listToUse[Math.floor(Math.random() * listToUse.length)]
-                  );
-                }}
-                className="me-2"
-              >
-                Gioca di nuovo
-              </button>
-              <button
+                style={{ display: indovinato ? "none" : "inline" }}
                 onClick={() => {
                   setFeedback(
                     `❌ Oh no, il Pokemon era ${capitalizeFirstLetter(
@@ -121,6 +128,7 @@ export default function Minigame({ pokemonList }) {
                   );
                   setShowPokemon(true);
                   setStreak(0);
+                  setRoundOver(true);
                 }}
               >
                 Arrenditi
