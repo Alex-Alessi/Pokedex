@@ -1,6 +1,6 @@
 import Modal from "react-bootstrap/Modal";
 import Carousel from "react-bootstrap/Carousel";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Mymodal({
   show,
@@ -29,6 +29,9 @@ export default function Mymodal({
   function handleSelect(selectedIndex) {
     setSlideIndex(selectedIndex);
   }
+  useEffect(() => {
+    setSlideIndex(0);
+  }, [id]);
 
   const slides = [
     { img: image, thumb: image },
@@ -44,7 +47,6 @@ export default function Mymodal({
       onHide={onHide}
       aria-labelledby="contained-modal-title-vcenter"
       centered
-      // style={{ maxHeight: "600px", marginTop: "20px" }}
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
@@ -83,7 +85,9 @@ export default function Mymodal({
             <img
               key={index}
               src={slide.thumb}
-              onClick={() => setSlideIndex(index)}
+              onClick={() => {
+                setSlideIndex(index);
+              }}
               className={`img-thumbnail ${
                 slideIndex === index ? "border-primary" : ""
               }`}
