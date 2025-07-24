@@ -7,7 +7,13 @@ import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
 import { faStar as faStarSolid } from "@fortawesome/free-solid-svg-icons";
 import Pagination from "react-bootstrap/Pagination";
 
-export default function Pokedex({ search, modalShow, setModalShow, selected }) {
+export default function Pokedex({
+  search,
+  modalShow,
+  setModalShow,
+  selected,
+  setPokemonList,
+}) {
   const [pokemon, setPokemon] = useState([]);
   const [pokemonDetail, setPokemonDetail] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
@@ -40,7 +46,7 @@ export default function Pokedex({ search, modalShow, setModalShow, selected }) {
   useEffect(() => {
     async function fetchPokemonData() {
       try {
-        const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=1000");
+        const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=373");
         const data = await res.json();
 
         const detailPromises = data.results.map(async (p) => {
@@ -179,6 +185,7 @@ export default function Pokedex({ search, modalShow, setModalShow, selected }) {
     return pages;
   }
   const pagesArray = getPagesArray(currentPage, totalPages);
+  setPokemonList(pokemon);
 
   return (
     <>
@@ -200,7 +207,7 @@ export default function Pokedex({ search, modalShow, setModalShow, selected }) {
                     maxHeight: "450px",
                     position: "relative",
                   }}
-                  className="card mt-4 mx-auto"
+                  className="cardCustom mt-4 mx-auto"
                   onClick={() => {
                     setPokemonDetail({
                       ...p,

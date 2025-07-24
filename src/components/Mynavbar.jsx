@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { faVolumeHigh } from "@fortawesome/free-solid-svg-icons";
 import { faVolumeXmark } from "@fortawesome/free-solid-svg-icons";
+import { faGamepad } from "@fortawesome/free-solid-svg-icons";
 import { useRef, useState } from "react";
 
 export default function Mynavbar({
@@ -127,6 +128,12 @@ export default function Mynavbar({
           <img src="/pokemon.png" width="150" height="60" />
         </Link>
         <Form className="d-flex align-items-center">
+          <Nav.Link as={Link} to="/minigame" className="me-2 mt-1">
+            <FontAwesomeIcon
+              icon={faGamepad}
+              style={{ color: "#000000", fontSize: "20px" }}
+            />
+          </Nav.Link>
           <div style={{ position: "relative", marginRight: "10px" }}>
             <FontAwesomeIcon
               icon={faMagnifyingGlass}

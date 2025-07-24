@@ -5,10 +5,12 @@ import Pokedex from "./pages/Pokedex";
 import Favorites from "./pages/Favorites";
 import Mynavbar from "./components/Mynavbar";
 import Homepage from "./pages/Homepage";
+import Minigame from "./pages/Minigame";
 function App() {
   const [search, setSearch] = useState("");
   const [modalShow, setModalShow] = useState(false);
   const [selected, setSelected] = useState("");
+  const [pokemonList, setPokemonList] = useState([]);
   return (
     <BrowserRouter>
       <div
@@ -51,6 +53,7 @@ function App() {
                 modalShow={modalShow}
                 setModalShow={setModalShow}
                 selected={selected}
+                setPokemonList={setPokemonList}
               />
             }
           />
@@ -64,6 +67,10 @@ function App() {
                 selected={selected}
               />
             }
+          />
+          <Route
+            path="/minigame"
+            element={<Minigame pokemonList={pokemonList} />}
           />
         </Routes>
       </div>

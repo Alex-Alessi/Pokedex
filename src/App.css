@@ -31,12 +31,12 @@
   }
 }
 
-.card {
+.cardCustom {
   padding: 2em;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.card:hover {
+.cardCustom:hover {
   box-shadow: 7px 7px 10px rgb(31, 30, 30);
   transform: scale(1.05);
 }

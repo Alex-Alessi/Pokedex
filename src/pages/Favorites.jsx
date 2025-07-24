@@ -163,7 +163,7 @@ export default function Favorites({
                       maxHeight: "450px",
                       position: "relative",
                     }}
-                    className="card mt-4 mx-auto"
+                    className="cardCustom mt-4 mx-auto"
                     onClick={() => {
                       setPokemonDetail({
                         ...p,
