@@ -32,6 +32,8 @@ export default function Minigame({ pokemonList }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (roundOver) return;
     const userInput = input.trim().toLowerCase();
     const correct = randomPokemon.name.toLowerCase();
 
@@ -40,7 +42,6 @@ export default function Minigame({ pokemonList }) {
         `✅ Era proprio ${capitalizeFirstLetter(randomPokemon.name)}!`
       );
       setShowPokemon(true);
-      setInput("");
       setIndovinato(true);
       setStreak((prev) => prev + 1);
       setRoundOver(true);
@@ -64,15 +65,21 @@ export default function Minigame({ pokemonList }) {
         <p style={{ color: "white" }}>Caricamento Pokemon...</p>
       ) : (
         <>
-          <Card style={{ width: "90%", height: "50%", margin: "14px auto" }}>
-            <h1 style={{ color: "#4db6ac" }}>Who's That Pokemon</h1>
+          <Card
+            style={{
+              width: "90%",
+              height: "50%",
+              margin: "14px auto",
+            }}
+          >
+            <h1 style={{ color: "#155998" }}>Who's That Pokemon</h1>
             <div
               style={{
                 width: "40px",
                 height: "40px",
                 margin: "0 auto",
                 borderRadius: "50%",
-                backgroundColor: "#4db6ac",
+                backgroundColor: "#155998",
                 color: "white",
                 marginTop: "10px",
                 fontSize: "25px",
@@ -83,13 +90,70 @@ export default function Minigame({ pokemonList }) {
             <Card.Img
               variant="top"
               style={{
-                width: "22rem",
+                width: "20rem",
                 margin: "0 auto",
                 filter: showPokemon ? "none" : "brightness(0)",
               }}
               src={randomPokemon.image}
             />
             <Card.Body>
+              <div
+                style={{
+                  marginBottom: "15px",
+                  marginTop: "-10px",
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                <div>
+                  <p>Indizio 1</p>
+                  <button
+                    style={{
+                      marginRight: "5px",
+                      borderRadius: "12px",
+                      backgroundImage: 'url("/bloccato.jpg")',
+                      backgroundSize: "cover",
+                      backgroundPosition: "center 70%",
+                      height: "29px",
+                      width: "75px",
+                      marginTop: "-20px",
+                      marginBottom: "20px",
+                    }}
+                  />
+                </div>
+                <div>
+                  <p>Indizio 2</p>
+                  <button
+                    style={{
+                      marginRight: "5px",
+                      borderRadius: "12px",
+                      backgroundImage: 'url("/bloccato.jpg")',
+                      backgroundSize: "cover",
+                      backgroundPosition: "center 70%",
+                      height: "29px",
+                      width: "75px",
+                      marginTop: "-20px",
+                      marginBottom: "20px",
+                    }}
+                  />
+                </div>
+                <div>
+                  <p>Indizio 3</p>
+                  <button
+                    style={{
+                      marginRight: "5px",
+                      borderRadius: "12px",
+                      backgroundImage: 'url("/bloccato.jpg")',
+                      backgroundSize: "cover",
+                      backgroundPosition: "center 70%",
+                      height: "29px",
+                      width: "75px",
+                      marginTop: "-20px",
+                      marginBottom: "20px",
+                    }}
+                  />
+                </div>
+              </div>
               <Card.Text>
                 <form onSubmit={handleSubmit}>
                   <input
@@ -97,9 +161,14 @@ export default function Minigame({ pokemonList }) {
                     onChange={(e) => {
                       setInput(e.target.value);
                     }}
+                    style={{
+                      borderRadius: "12px",
+                      backgroundColor: "#121212 ",
+                      color: "white",
+                    }}
                   />
                 </form>
-                <p>{feedback}</p>
+                <p style={{ marginTop: "12px" }}>{feedback}</p>
               </Card.Text>
               {roundOver && (
                 <button
@@ -113,13 +182,23 @@ export default function Minigame({ pokemonList }) {
                     setIndovinato(false);
                     setRoundOver(false);
                   }}
+                  style={{
+                    borderRadius: "12px",
+                    backgroundColor: "#121212 ",
+                    color: "white",
+                  }}
                   className="me-2"
                 >
                   Gioca di nuovo
                 </button>
               )}
               <button
-                style={{ display: indovinato ? "none" : "inline" }}
+                style={{
+                  display: indovinato ? "none" : "inline",
+                  borderRadius: "12px",
+                  backgroundColor: "#121212 ",
+                  color: "white",
+                }}
                 onClick={() => {
                   setFeedback(
                     `❌ Oh no, il Pokemon era ${capitalizeFirstLetter(
