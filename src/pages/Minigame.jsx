@@ -3,11 +3,12 @@ import Card from "react-bootstrap/Card";
 
 export default function Minigame({ pokemonList }) {
   const [localList, setLocalList] = useState([]);
-  const listToUse = pokemonList.length > 0 ? pokemonList : localList;
   const [indovinato, setIndovinato] = useState(false);
   const [input, setInput] = useState("");
   const [feedback, setFeedback] = useState("");
   const [showPokemon, setShowPokemon] = useState(false);
+
+  const listToUse = pokemonList.length > 0 ? pokemonList : localList;
 
   useEffect(() => {
     if (pokemonList.length === 0) {
@@ -26,10 +27,6 @@ export default function Minigame({ pokemonList }) {
     }
   }, [pokemonList]);
 
-  const randomPokemon = useMemo(() => {
-    return listToUse[Math.floor(Math.random() * listToUse.length)];
-  }, [indovinato]);
-
   const handleSubmit = (e) => {
     e.preventDefault();
     const userInput = input.trim().toLowerCase();
@@ -44,6 +41,10 @@ export default function Minigame({ pokemonList }) {
     }
   };
 
+  const randomPokemon = useMemo(() => {
+    if (listToUse.length === 0) return null;
+    return listToUse[Math.floor(Math.random() * listToUse.length)];
+  }, [listToUse, indovinato]);
   return (
     <>
       {!randomPokemon ? (
