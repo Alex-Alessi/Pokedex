@@ -7,6 +7,8 @@ export default function Minigame({ pokemonList }) {
   const [input, setInput] = useState("");
   const [feedback, setFeedback] = useState("");
   const [showPokemon, setShowPokemon] = useState(false);
+  const [streak, setStreak] = useState(0);
+  const [randomPokemon, setRandomPokemon] = useState(null);
 
   const listToUse = pokemonList.length > 0 ? pokemonList : localList;
 
@@ -39,6 +41,7 @@ export default function Minigame({ pokemonList }) {
       setShowPokemon(true);
       setInput("");
       setIndovinato(true);
+      setStreak((prev) => prev + 1);
     } else {
       setFeedback("❌ Riprova!");
     }
@@ -48,25 +51,37 @@ export default function Minigame({ pokemonList }) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
-  const randomPokemon = useMemo(() => {
-    setIndovinato(false);
-    setShowPokemon(false);
-    setFeedback("");
-    if (listToUse.length === 0) return null;
-    return listToUse[Math.floor(Math.random() * listToUse.length)];
-  }, [listToUse, indovinato]);
+  useEffect(() => {
+    if (listToUse.length > 0 && !randomPokemon) {
+      setRandomPokemon(listToUse[Math.floor(Math.random() * listToUse.length)]);
+    }
+  }, [listToUse, randomPokemon]);
   return (
     <>
       {!randomPokemon ? (
         <p style={{ color: "white" }}>Caricamento Pokemon...</p>
       ) : (
         <>
-          <h1 style={{ color: "white" }}>Who's That Pokemon</h1>
-          <Card style={{ width: "90%", height: "50%", margin: "0 auto" }}>
+          <Card style={{ width: "90%", height: "50%", margin: "14px auto" }}>
+            <h1 style={{ color: "#4db6ac" }}>Who's That Pokemon</h1>
+            <div
+              style={{
+                width: "40px",
+                height: "40px",
+                margin: "0 auto",
+                borderRadius: "50%",
+                backgroundColor: "#4db6ac",
+                color: "white",
+                marginTop: "10px",
+                fontSize: "25px",
+              }}
+            >
+              {streak}
+            </div>
             <Card.Img
               variant="top"
               style={{
-                width: "25rem",
+                width: "22rem",
                 margin: "0 auto",
                 filter: showPokemon ? "none" : "brightness(0)",
               }}
@@ -88,7 +103,10 @@ export default function Minigame({ pokemonList }) {
                 onClick={() => {
                   setFeedback("");
                   setShowPokemon(false);
-                  setIndovinato(true);
+                  setInput("");
+                  setRandomPokemon(
+                    listToUse[Math.floor(Math.random() * listToUse.length)]
+                  );
                 }}
                 className="me-2"
               >
@@ -102,6 +120,7 @@ export default function Minigame({ pokemonList }) {
                     )}`
                   );
                   setShowPokemon(true);
+                  setStreak(0);
                 }}
               >
                 Arrenditi
