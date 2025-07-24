@@ -33,15 +33,25 @@ export default function Minigame({ pokemonList }) {
     const correct = randomPokemon.name.toLowerCase();
 
     if (userInput === correct) {
-      setFeedback(`✅ Era proprio ${randomPokemon.name}!`);
+      setFeedback(
+        `✅ Era proprio ${capitalizeFirstLetter(randomPokemon.name)}!`
+      );
       setShowPokemon(true);
       setInput("");
+      setIndovinato(true);
     } else {
       setFeedback("❌ Riprova!");
     }
   };
 
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
   const randomPokemon = useMemo(() => {
+    setIndovinato(false);
+    setShowPokemon(false);
+    setFeedback("");
     if (listToUse.length === 0) return null;
     return listToUse[Math.floor(Math.random() * listToUse.length)];
   }, [listToUse, indovinato]);
@@ -80,8 +90,21 @@ export default function Minigame({ pokemonList }) {
                   setShowPokemon(false);
                   setIndovinato(true);
                 }}
+                className="me-2"
               >
                 Gioca di nuovo
+              </button>
+              <button
+                onClick={() => {
+                  setFeedback(
+                    `❌ Oh no, il Pokemon era ${capitalizeFirstLetter(
+                      randomPokemon.name
+                    )}`
+                  );
+                  setShowPokemon(true);
+                }}
+              >
+                Arrenditi
               </button>
             </Card.Body>
           </Card>
