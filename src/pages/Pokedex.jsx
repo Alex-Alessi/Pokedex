@@ -6,6 +6,7 @@ import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
 import { faStar as faStarSolid } from "@fortawesome/free-solid-svg-icons";
 import Pagination from "react-bootstrap/Pagination";
+import { fetchAllPokemon } from "../utils/fetchAllPokemon";
 
 export default function Pokedex({
   search,
@@ -44,69 +45,12 @@ export default function Pokedex({
   ];
 
   useEffect(() => {
-    async function fetchPokemonData() {
-      try {
-        const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=1300");
-        const data = await res.json();
-
-        const detailPromises = data.results.map(async (p) => {
-          try {
-            const detailRes = await fetch(p.url);
-            const detailData = await detailRes.json();
-
-            const speciesRes = await fetch(detailData.species.url);
-            const speciesData = await speciesRes.json();
-
-            return {
-              ...detailData,
-              eggGroup: speciesData.egg_groups,
-              gen: getGen(speciesData.generation.url),
-              isLegendary: speciesData.is_legendary,
-              isMythical: speciesData.is_mythical,
-            };
-          } catch (err) {
-            console.error(err);
-            return null;
-          }
-        });
-
-        const results = await Promise.all(detailPromises);
-
-        const formattedData = results
-          .filter((p) => p !== null) //filtro aggiunto per non far crashare il sito in caso di valore nullo
-          .map((pokemon) => ({
-            id: pokemon.id,
-            name: pokemon.name,
-            types: pokemon.types.map((t) => t.type.name),
-            image: pokemon.sprites.front_default,
-            image2: pokemon.sprites.back_default,
-            image3: pokemon.sprites.front_shiny,
-            image4: pokemon.sprites.back_shiny,
-            height: pokemon.height,
-            weight: pokemon.weight,
-            base_experience: pokemon.base_experience,
-            abilities: pokemon.abilities.map((a) => ({
-              name: a.ability.name,
-              is_hidden: a.is_hidden,
-            })),
-            stats: pokemon.stats.map((s) => ({
-              name: s.stat.name,
-              base_stat: s.base_stat,
-            })),
-            cry: `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${pokemon.id}.ogg`,
-            eggGroup: pokemon.eggGroup,
-            gen: pokemon.gen,
-            isLegendary: pokemon.isLegendary,
-            isMythical: pokemon.isMythical,
-          }));
-
-        setPokemon(formattedData);
-      } catch (err) {
-        console.error("Errore durante il fetch:", err);
-      }
+    async function loadPokemon() {
+      const data = await fetchAllPokemon();
+      setPokemon(data);
     }
 
-    fetchPokemonData();
+    loadPokemon();
   }, []);
 
   useEffect(() => {
@@ -265,7 +209,7 @@ export default function Pokedex({
                       height: "27px",
                     }}
                   >
-                    {p.types.map((type, i) => (
+                    {p.types?.map((type, i) => (
                       <span
                         key={i}
                         style={{

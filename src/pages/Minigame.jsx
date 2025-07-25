@@ -1,5 +1,6 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import Card from "react-bootstrap/Card";
+import { fetchAllPokemon } from "../utils/fetchAllPokemon";
 
 export default function Minigame({ pokemonList }) {
   const [localList, setLocalList] = useState([]);
@@ -15,18 +16,10 @@ export default function Minigame({ pokemonList }) {
 
   useEffect(() => {
     if (pokemonList.length === 0) {
-      fetch("https://pokeapi.co/api/v2/pokemon?limit=373")
-        .then((res) => res.json())
-        .then((data) => {
-          const essentialData = data.results.map((p, i) => ({
-            id: i + 1,
-            name: p.name,
-            image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
-              i + 1
-            }.png`,
-          }));
-          setLocalList(essentialData);
-        });
+      fetchAllPokemon(1300, 50, 300).then((essentialData) => {
+        setLocalList(essentialData);
+        console.log(fetchAllPokemon);
+      });
     }
   }, [pokemonList]);
 
@@ -62,7 +55,9 @@ export default function Minigame({ pokemonList }) {
   return (
     <>
       {!randomPokemon ? (
-        <p style={{ color: "white" }}>Caricamento Pokemon...</p>
+        <p style={{ color: "white", textAlign: "center" }}>
+          Caricamento di tutti i Pokémon in corso...
+        </p>
       ) : (
         <>
           <Card
