@@ -152,6 +152,11 @@ export default function Pokedex({
           }}
         >
           <div className="row">
+            {currentPokemonPage.length === 0 && (
+              <p className="text-center mt-4 fs-4" style={{ color: "white" }}>
+                Nessun Pokémon trovato.
+              </p>
+            )}
             {currentPokemonPage.map((p, index) => (
               <div key={index} className="col-md-4 mb-4">
                 <Card
@@ -257,7 +262,14 @@ export default function Pokedex({
               <FontAwesomeIcon icon={faArrowUp} style={{ color: "#000000" }} />
             </button>
           </div>
-          <Pagination style={{ width: "375px", margin: "10px auto" }}>
+          <Pagination
+            style={{
+              width: "375px",
+              margin: "10px auto",
+              display:
+                totalPages > 1 && filteredPokemon.length > 0 ? "flex" : "none",
+            }}
+          >
             <Pagination.Prev
               onClick={() => currentPage > 1 && setCurrentPage(currentPage - 1)}
               disabled={currentPage === 1}
