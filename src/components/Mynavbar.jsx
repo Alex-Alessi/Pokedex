@@ -57,7 +57,7 @@ export default function Mynavbar({
       <Navbar.Brand href="/" className="ms-2">
         <img
           alt=""
-          src="/pikachu.gif"
+          src={`${import.meta.env.BASE_URL}pikachu.gif`}
           width="40"
           height="30"
           className="d-inline-block align-top"
@@ -125,7 +125,11 @@ export default function Mynavbar({
           </audio>
         </Nav>
         <Link to="/pokedex" className="mx-auto">
-          <img src="/pokemon.png" width="150" height="60" />
+          <img
+            src={`${import.meta.env.BASE_URL}pokemon.png`}
+            width="150"
+            height="60"
+          />
         </Link>
         <Form className="d-flex align-items-center">
           <Nav.Link as={Link} to="/minigame" className="me-2 mt-1">
