@@ -45,8 +45,9 @@ export default function Pokedex({
   ];
 
   useEffect(() => {
+    localStorage.removeItem("pokeList");
     async function loadPokemon() {
-      const data = await fetchAllPokemon();
+      const data = await fetchAllPokemon(980);
       setPokemon(data);
     }
 
