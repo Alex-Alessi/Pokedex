@@ -103,6 +103,18 @@ export default function Mynavbar({
               <Dropdown.Item onClick={() => setSelected("gen5")}>
                 Gen 5
               </Dropdown.Item>
+              <Dropdown.Item onClick={() => setSelected("gen6")}>
+                Gen 6
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => setSelected("gen7")}>
+                Gen 7
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => setSelected("gen8")}>
+                Gen 8
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => setSelected("gen9")}>
+                Gen 9
+              </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
 
