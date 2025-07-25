@@ -65,7 +65,15 @@ export async function fetchAllPokemon(
       })
     );
 
-    allResults.push(...results.filter(Boolean));
+    allResults.push(
+      ...results.filter(
+        (poke) =>
+          poke &&
+          typeof poke.id === "number" &&
+          poke.id <= limit &&
+          !poke.name.includes("-")
+      )
+    );
     await new Promise((resolve) => setTimeout(resolve, delay));
   }
 
