@@ -67,7 +67,7 @@ export default function Minigame({ pokemonList }) {
         <>
           <Card
             style={{
-              width: "90%",
+              width: "85%",
               height: "50%",
               margin: "14px auto",
             }}

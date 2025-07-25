@@ -46,7 +46,7 @@ export default function Pokedex({
   useEffect(() => {
     async function fetchPokemonData() {
       try {
-        const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=373");
+        const res = await fetch("https://pokeapi.co/api/v2/pokemon?limit=1300");
         const data = await res.json();
 
         const detailPromises = data.results.map(async (p) => {
@@ -185,7 +185,10 @@ export default function Pokedex({
     return pages;
   }
   const pagesArray = getPagesArray(currentPage, totalPages);
-  setPokemonList(pokemon);
+
+  useEffect(() => {
+    setPokemonList(pokemon);
+  }, [pokemon]);
 
   return (
     <>
