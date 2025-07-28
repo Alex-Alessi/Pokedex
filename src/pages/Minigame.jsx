@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Card from "react-bootstrap/Card";
 import { fetchAllPokemon } from "../utils/fetchAllPokemon";
+import bloccato from "/bloccato.jpg";
 
 export default function Minigame({ pokemonList }) {
   const [localList, setLocalList] = useState([]);
@@ -11,6 +12,7 @@ export default function Minigame({ pokemonList }) {
   const [streak, setStreak] = useState(0);
   const [randomPokemon, setRandomPokemon] = useState(null);
   const [roundOver, setRoundOver] = useState(false);
+  const [sbloccati, setSbloccati] = useState([]);
 
   const listToUse = pokemonList.length > 0 ? pokemonList : localList;
 
@@ -106,7 +108,9 @@ export default function Minigame({ pokemonList }) {
                     style={{
                       marginRight: "5px",
                       borderRadius: "12px",
-                      backgroundImage: 'url("/bloccato.jpg")',
+                      backgroundImage: sbloccati.includes("indizio1")
+                        ? ""
+                        : `url(${bloccato})`,
                       backgroundSize: "cover",
                       backgroundPosition: "center 70%",
                       height: "29px",
@@ -114,6 +118,9 @@ export default function Minigame({ pokemonList }) {
                       marginTop: "-20px",
                       marginBottom: "20px",
                     }}
+                    onClick={() =>
+                      setSbloccati((prev) => [...prev, "indizio1"])
+                    }
                   />
                 </div>
                 <div>
@@ -122,7 +129,9 @@ export default function Minigame({ pokemonList }) {
                     style={{
                       marginRight: "5px",
                       borderRadius: "12px",
-                      backgroundImage: 'url("/bloccato.jpg")',
+                      backgroundImage: sbloccati.includes("indizio2")
+                        ? ""
+                        : `url(${bloccato})`,
                       backgroundSize: "cover",
                       backgroundPosition: "center 70%",
                       height: "29px",
@@ -130,6 +139,9 @@ export default function Minigame({ pokemonList }) {
                       marginTop: "-20px",
                       marginBottom: "20px",
                     }}
+                    onClick={() =>
+                      setSbloccati((prev) => [...prev, "indizio2"])
+                    }
                   />
                 </div>
                 <div>
@@ -138,7 +150,9 @@ export default function Minigame({ pokemonList }) {
                     style={{
                       marginRight: "5px",
                       borderRadius: "12px",
-                      backgroundImage: 'url("/bloccato.jpg")',
+                      backgroundImage: sbloccati.includes("indizio3")
+                        ? ""
+                        : `url(${bloccato})`,
                       backgroundSize: "cover",
                       backgroundPosition: "center 70%",
                       height: "29px",
@@ -146,10 +160,13 @@ export default function Minigame({ pokemonList }) {
                       marginTop: "-20px",
                       marginBottom: "20px",
                     }}
+                    onClick={() =>
+                      setSbloccati((prev) => [...prev, "indizio3"])
+                    }
                   />
                 </div>
               </div>
-              <Card.Text>
+              <div>
                 <form onSubmit={handleSubmit}>
                   <input
                     value={input}
@@ -164,7 +181,7 @@ export default function Minigame({ pokemonList }) {
                   />
                 </form>
                 <p style={{ marginTop: "12px" }}>{feedback}</p>
-              </Card.Text>
+              </div>
               {roundOver && (
                 <button
                   onClick={() => {
