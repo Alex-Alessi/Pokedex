@@ -39,10 +39,12 @@ export default function Minigame({ pokemonList }) {
       setFeedback(
         `✅ Era proprio ${capitalizeFirstLetter(randomPokemon.name)}!`
       );
+      setBalance((prev) => prev + 100);
       setShowPokemon(true);
       setIndovinato(true);
       setStreak((prev) => prev + 1);
       setRoundOver(true);
+      setSbloccati([]);
     } else {
       setFeedback("❌ Riprova!");
     }
@@ -50,6 +52,38 @@ export default function Minigame({ pokemonList }) {
 
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
+  function handleClick(indizio) {
+    if (indizio === "indizio1" && !sbloccati.includes("indizio1")) {
+      setSbloccati((prev) => [...prev, "indizio1"]);
+      setBalance((prev) => prev - cost("indizio1"));
+    } else if (
+      indizio === "indizio2" &&
+      sbloccati.includes("indizio1") &&
+      !sbloccati.includes("indizio2")
+    ) {
+      setSbloccati((prev) => [...prev, "indizio2"]);
+      setBalance((prev) => prev - cost("indizio2"));
+    } else if (
+      indizio === "indizio3" &&
+      sbloccati.includes("indizio2") &&
+      !sbloccati.includes("indizio3")
+    ) {
+      setSbloccati((prev) => [...prev, "indizio3"]);
+      setBalance((prev) => prev - cost("indizio3"));
+    }
+    return "";
+  }
+
+  function cost(indizio) {
+    if (indizio === "indizio1") {
+      return 20;
+    } else if (indizio === "indizio2") {
+      return 30;
+    } else if (indizio === "indizio3") {
+      return 50;
+    }
   }
 
   useEffect(() => {
@@ -157,9 +191,9 @@ export default function Minigame({ pokemonList }) {
                       marginTop: "-5px",
                       marginBottom: "20px",
                     }}
-                    onClick={() =>
-                      setSbloccati((prev) => [...prev, "indizio1"])
-                    }
+                    onClick={() => {
+                      handleClick("indizio1");
+                    }}
                   />
                   <div
                     style={{
@@ -168,12 +202,12 @@ export default function Minigame({ pokemonList }) {
                       marginTop: "-20px",
                       alignItems: "center",
                       height: "35px",
-                      marginLeft: "-10px",
+                      marginLeft: "-20px",
                     }}
                   >
                     <img src={coin} width="50" height="50" />
                     <p style={{ marginBottom: "initial", marginLeft: "-13px" }}>
-                      200
+                      {cost("indizio1")}
                     </p>
                   </div>
                 </div>
@@ -192,9 +226,7 @@ export default function Minigame({ pokemonList }) {
                       marginTop: "-5px",
                       marginBottom: "20px",
                     }}
-                    onClick={() =>
-                      setSbloccati((prev) => [...prev, "indizio2"])
-                    }
+                    onClick={() => handleClick("indizio2")}
                   />
                   <div
                     style={{
@@ -203,12 +235,11 @@ export default function Minigame({ pokemonList }) {
                       marginTop: "-20px",
                       alignItems: "center",
                       height: "35px",
-                      marginLeft: "-10px",
                     }}
                   >
                     <img src={coin} width="50" height="50" />
                     <p style={{ marginBottom: "initial", marginLeft: "-13px" }}>
-                      200
+                      {cost("indizio2")}
                     </p>
                   </div>
                 </div>
@@ -227,9 +258,7 @@ export default function Minigame({ pokemonList }) {
                       marginTop: "-5px",
                       marginBottom: "20px",
                     }}
-                    onClick={() =>
-                      setSbloccati((prev) => [...prev, "indizio3"])
-                    }
+                    onClick={() => handleClick("indizio3")}
                   />
                   <div
                     style={{
@@ -238,12 +267,11 @@ export default function Minigame({ pokemonList }) {
                       marginTop: "-20px",
                       alignItems: "center",
                       height: "35px",
-                      marginLeft: "-10px",
                     }}
                   >
                     <img src={coin} width="50" height="50" />
                     <p style={{ marginBottom: "initial", marginLeft: "-13px" }}>
-                      200
+                      {cost("indizio3")}
                     </p>
                   </div>
                 </div>
@@ -302,6 +330,8 @@ export default function Minigame({ pokemonList }) {
                   setShowPokemon(true);
                   setStreak(0);
                   setRoundOver(true);
+                  setBalance(100);
+                  setSbloccati([]);
                 }}
               >
                 Arrenditi
