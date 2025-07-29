@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import Card from "react-bootstrap/Card";
 import { fetchAllPokemon } from "../utils/fetchAllPokemon";
 import bloccato from "/bloccato.jpg";
+import coin from "/coin.png";
+import coinFlip from "/coinFlip.gif";
 
 export default function Minigame({ pokemonList }) {
   const [localList, setLocalList] = useState([]);
@@ -13,6 +15,7 @@ export default function Minigame({ pokemonList }) {
   const [randomPokemon, setRandomPokemon] = useState(null);
   const [roundOver, setRoundOver] = useState(false);
   const [sbloccati, setSbloccati] = useState([]);
+  const [balance, setBalance] = useState(100);
 
   const listToUse = pokemonList.length > 0 ? pokemonList : localList;
 
@@ -71,18 +74,48 @@ export default function Minigame({ pokemonList }) {
           >
             <h1 style={{ color: "#155998" }}>Who's That Pokemon</h1>
             <div
-              style={{
-                width: "40px",
-                height: "40px",
-                margin: "0 auto",
-                borderRadius: "50%",
-                backgroundColor: "#155998",
-                color: "white",
-                marginTop: "10px",
-                fontSize: "25px",
-              }}
+              style={{ position: "relative", height: "40px", width: "100%" }}
             >
-              {streak}
+              <div
+                style={{
+                  position: "absolute",
+                  left: "50%",
+                  top: 0,
+                  transform: "translateX(-50%)",
+                  width: "40px",
+                  height: "40px",
+                  borderRadius: "50%",
+                  backgroundColor: "#155998",
+                  color: "white",
+                  fontSize: "25px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                {streak}
+              </div>
+              <div
+                style={{
+                  position: "absolute",
+                  right: 0,
+                  top: 0,
+                  display: "flex",
+                  alignItems: "center",
+                  marginRight: "30px",
+                }}
+              >
+                <img src={coinFlip} width="40" height="40" />
+                <div
+                  style={{
+                    marginLeft: "-5px",
+                    zIndex: "2",
+                    marginBottom: "7px",
+                  }}
+                >
+                  {balance}
+                </div>
+              </div>
             </div>
             <Card.Img
               variant="top"
@@ -100,13 +133,19 @@ export default function Minigame({ pokemonList }) {
                   marginTop: "-10px",
                   display: "flex",
                   justifyContent: "center",
+                  gap: "10px",
                 }}
               >
-                <div>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                >
                   <p>Indizio 1</p>
                   <button
                     style={{
-                      marginRight: "5px",
                       borderRadius: "12px",
                       backgroundImage: sbloccati.includes("indizio1")
                         ? ""
@@ -115,19 +154,33 @@ export default function Minigame({ pokemonList }) {
                       backgroundPosition: "center 70%",
                       height: "29px",
                       width: "75px",
-                      marginTop: "-20px",
+                      marginTop: "-5px",
                       marginBottom: "20px",
                     }}
                     onClick={() =>
                       setSbloccati((prev) => [...prev, "indizio1"])
                     }
                   />
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      marginTop: "-20px",
+                      alignItems: "center",
+                      height: "35px",
+                      marginLeft: "-10px",
+                    }}
+                  >
+                    <img src={coin} width="50" height="50" />
+                    <p style={{ marginBottom: "initial", marginLeft: "-13px" }}>
+                      200
+                    </p>
+                  </div>
                 </div>
                 <div>
                   <p>Indizio 2</p>
                   <button
                     style={{
-                      marginRight: "5px",
                       borderRadius: "12px",
                       backgroundImage: sbloccati.includes("indizio2")
                         ? ""
@@ -136,19 +189,33 @@ export default function Minigame({ pokemonList }) {
                       backgroundPosition: "center 70%",
                       height: "29px",
                       width: "75px",
-                      marginTop: "-20px",
+                      marginTop: "-5px",
                       marginBottom: "20px",
                     }}
                     onClick={() =>
                       setSbloccati((prev) => [...prev, "indizio2"])
                     }
                   />
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      marginTop: "-20px",
+                      alignItems: "center",
+                      height: "35px",
+                      marginLeft: "-10px",
+                    }}
+                  >
+                    <img src={coin} width="50" height="50" />
+                    <p style={{ marginBottom: "initial", marginLeft: "-13px" }}>
+                      200
+                    </p>
+                  </div>
                 </div>
                 <div>
                   <p>Indizio 3</p>
                   <button
                     style={{
-                      marginRight: "5px",
                       borderRadius: "12px",
                       backgroundImage: sbloccati.includes("indizio3")
                         ? ""
@@ -157,13 +224,28 @@ export default function Minigame({ pokemonList }) {
                       backgroundPosition: "center 70%",
                       height: "29px",
                       width: "75px",
-                      marginTop: "-20px",
+                      marginTop: "-5px",
                       marginBottom: "20px",
                     }}
                     onClick={() =>
                       setSbloccati((prev) => [...prev, "indizio3"])
                     }
                   />
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      marginTop: "-20px",
+                      alignItems: "center",
+                      height: "35px",
+                      marginLeft: "-10px",
+                    }}
+                  >
+                    <img src={coin} width="50" height="50" />
+                    <p style={{ marginBottom: "initial", marginLeft: "-13px" }}>
+                      200
+                    </p>
+                  </div>
                 </div>
               </div>
               <div>
