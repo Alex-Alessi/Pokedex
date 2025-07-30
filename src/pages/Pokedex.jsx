@@ -89,9 +89,6 @@ export default function Pokedex({
   const selectedGen = selected.replace(/\D/g, ""); //serve per estrarre il numero
 
   const filteredPokemon = useMemo(() => {
-    console.log("Search term in Pokedex:", search);
-    console.log("Number of Pokémon:", pokemon.length);
-    console.log("Esempio Pokémon name:", pokemon[0]?.name);
     return pokemon
       .filter((p) => p.name.toLowerCase().includes(search.toLowerCase()))
       .filter((pkmnGen) => selected === "" || pkmnGen.gen === selectedGen);

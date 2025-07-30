@@ -19,6 +19,19 @@ export default function Minigame({ pokemonList }) {
 
   const listToUse = pokemonList.length > 0 ? pokemonList : localList;
 
+  const pokemonWithDash = [
+    "Nidoran-f",
+    "Nidoran-m",
+    "Mr-mime",
+    "Ho-oh",
+    "Porygon-z",
+    "Tapu-koko",
+    "Tapu-lele",
+    "Tapu-bulu",
+    "Tapu-fini",
+    "Mr-rime",
+  ];
+
   useEffect(() => {
     if (pokemonList.length === 0) {
       fetchAllPokemon(1300, 50, 300).then((essentialData) => {
@@ -28,6 +41,13 @@ export default function Minigame({ pokemonList }) {
     }
   }, [pokemonList]);
 
+  function includesDash(string) {
+    if (string.includes("-") && !pokemonWithDash.includes(string)) {
+      return string.split("-")[0].toLowerCase();
+    }
+    return string.toLowerCase();
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -35,7 +55,7 @@ export default function Minigame({ pokemonList }) {
     const userInput = input.trim().toLowerCase();
     const correct = randomPokemon.name.toLowerCase();
 
-    if (userInput === correct) {
+    if (userInput === correct || userInput === includesDash(correct)) {
       setFeedback(
         `✅ Era proprio ${capitalizeFirstLetter(randomPokemon.name)}!`
       );
@@ -410,7 +430,7 @@ export default function Minigame({ pokemonList }) {
                 onClick={() => {
                   setFeedback(
                     `❌ Oh no, il Pokemon era ${capitalizeFirstLetter(
-                      randomPokemon.name
+                      includesDash(randomPokemon.name)
                     )}`
                   );
                   setShowPokemon(true);
