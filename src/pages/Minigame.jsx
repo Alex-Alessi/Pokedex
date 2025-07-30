@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import Card from "react-bootstrap/Card";
 import { fetchAllPokemon } from "../utils/fetchAllPokemon";
-import bloccato from "/bloccato.jpg";
-import coin from "/coin.png";
-import coinFlip from "/coinFlip.gif";
 
 export default function Minigame({ pokemonList }) {
   const [localList, setLocalList] = useState([]);
@@ -16,6 +13,8 @@ export default function Minigame({ pokemonList }) {
   const [roundOver, setRoundOver] = useState(false);
   const [sbloccati, setSbloccati] = useState([]);
   const [balance, setBalance] = useState(100);
+
+  const bloccatoUrl = `${import.meta.env.BASE_URL}bloccato.jpg`;
 
   const listToUse = pokemonList.length > 0 ? pokemonList : localList;
 
@@ -139,7 +138,11 @@ export default function Minigame({ pokemonList }) {
                   marginRight: "30px",
                 }}
               >
-                <img src={coinFlip} width="40" height="40" />
+                <img
+                  src={`${import.meta.env.BASE_URL}coinFlip.gif`}
+                  width="40"
+                  height="40"
+                />
                 <div
                   style={{
                     marginLeft: "-5px",
@@ -178,38 +181,66 @@ export default function Minigame({ pokemonList }) {
                   }}
                 >
                   <p>Indizio 1</p>
-                  <button
-                    style={{
-                      borderRadius: "12px",
-                      backgroundImage: sbloccati.includes("indizio1")
-                        ? ""
-                        : `url(${bloccato})`,
-                      backgroundSize: "cover",
-                      backgroundPosition: "center 70%",
-                      height: "29px",
-                      width: "75px",
-                      marginTop: "-5px",
-                      marginBottom: "20px",
-                    }}
-                    onClick={() => {
-                      handleClick("indizio1");
-                    }}
-                  />
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      marginTop: "-20px",
-                      alignItems: "center",
-                      height: "35px",
-                      marginLeft: "-20px",
-                    }}
-                  >
-                    <img src={coin} width="50" height="50" />
-                    <p style={{ marginBottom: "initial", marginLeft: "-13px" }}>
-                      {cost("indizio1")}
-                    </p>
-                  </div>
+                  {!sbloccati.includes("indizio1") ? (
+                    <>
+                      <button
+                        style={{
+                          borderRadius: "12px",
+                          backgroundImage: sbloccati.includes("indizio1")
+                            ? ""
+                            : `url(${bloccatoUrl})`,
+                          backgroundSize: "cover",
+                          backgroundPosition: "center 70%",
+                          height: "29px",
+                          width: "75px",
+                          marginTop: "-5px",
+                          marginBottom: "20px",
+                        }}
+                        onClick={() => {
+                          handleClick("indizio1");
+                        }}
+                      />
+
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          marginTop: "-20px",
+                          alignItems: "center",
+                          height: "35px",
+                          marginLeft: "-20px",
+                        }}
+                      >
+                        <img
+                          src={`${import.meta.env.BASE_URL}coin.png`}
+                          width="50"
+                          height="50"
+                        />
+                        <p
+                          style={{
+                            marginBottom: "initial",
+                            marginLeft: "-13px",
+                          }}
+                        >
+                          {cost("indizio1")}
+                        </p>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="pokedex-box">
+                      <div className="pokedex-header">
+                        <span className="led" />
+                        <span className="led" />
+                        <span className="led" />
+                      </div>
+                      <div className="pokedex-content">
+                        <p>
+                          <strong>Indizio:</strong> Un’ombra veloce è stata
+                          vista tra gli alberi… forse un tipo Erba?
+                        </p>
+                      </div>
+                    </div>
+                  )}
                 </div>
                 <div>
                   <p>Indizio 2</p>
@@ -218,7 +249,7 @@ export default function Minigame({ pokemonList }) {
                       borderRadius: "12px",
                       backgroundImage: sbloccati.includes("indizio2")
                         ? ""
-                        : `url(${bloccato})`,
+                        : `url(${bloccatoUrl})`,
                       backgroundSize: "cover",
                       backgroundPosition: "center 70%",
                       height: "29px",
@@ -237,7 +268,11 @@ export default function Minigame({ pokemonList }) {
                       height: "35px",
                     }}
                   >
-                    <img src={coin} width="50" height="50" />
+                    <img
+                      src={`${import.meta.env.BASE_URL}coin.png`}
+                      width="50"
+                      height="50"
+                    />
                     <p style={{ marginBottom: "initial", marginLeft: "-13px" }}>
                       {cost("indizio2")}
                     </p>
@@ -250,7 +285,7 @@ export default function Minigame({ pokemonList }) {
                       borderRadius: "12px",
                       backgroundImage: sbloccati.includes("indizio3")
                         ? ""
-                        : `url(${bloccato})`,
+                        : `url(${bloccatoUrl})`,
                       backgroundSize: "cover",
                       backgroundPosition: "center 70%",
                       height: "29px",
@@ -269,7 +304,11 @@ export default function Minigame({ pokemonList }) {
                       height: "35px",
                     }}
                   >
-                    <img src={coin} width="50" height="50" />
+                    <img
+                      src={`${import.meta.env.BASE_URL}coin.png`}
+                      width="50"
+                      height="50"
+                    />
                     <p style={{ marginBottom: "initial", marginLeft: "-13px" }}>
                       {cost("indizio3")}
                     </p>
