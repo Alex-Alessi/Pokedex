@@ -33,6 +33,14 @@ export default function Minigame({ pokemonList }) {
   ];
 
   useEffect(() => {
+    const audio = new Audio("/Pokedex/whos-that-pokemon_.mp3");
+    audio.volume = 0.3;
+    audio.play().catch((error) => {
+      console.warn("Errore durante la riproduzione dell'audio:", error);
+    });
+  }, []);
+
+  useEffect(() => {
     if (pokemonList.length === 0) {
       fetchAllPokemon(1300, 50, 300).then((essentialData) => {
         setLocalList(essentialData);
