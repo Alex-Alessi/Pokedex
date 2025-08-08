@@ -20,16 +20,16 @@ export default function Minigame({ pokemonList }) {
   const listToUse = pokemonList.length > 0 ? pokemonList : localList;
 
   const pokemonWithDash = [
-    "Nidoran-f",
-    "Nidoran-m",
-    "Mr-mime",
-    "Ho-oh",
-    "Porygon-z",
-    "Tapu-koko",
-    "Tapu-lele",
-    "Tapu-bulu",
-    "Tapu-fini",
-    "Mr-rime",
+    "nidoran-f",
+    "nidoran-m",
+    "mr-mime",
+    "ho-oh",
+    "porygon-z",
+    "tapu-koko",
+    "tapu-lele",
+    "tapu-bulu",
+    "tapu-fini",
+    "mr-rime",
   ];
 
   useEffect(() => {
@@ -50,7 +50,10 @@ export default function Minigame({ pokemonList }) {
   }, [pokemonList]);
 
   function includesDash(string) {
-    if (string.includes("-") && !pokemonWithDash.includes(string)) {
+    if (
+      string.includes("-") &&
+      !pokemonWithDash.includes(string.toLowerCase())
+    ) {
       return string.split("-")[0].toLowerCase();
     }
     return string.toLowerCase();
@@ -226,16 +229,18 @@ export default function Minigame({ pokemonList }) {
               {sbloccati.includes("indizio2") && (
                 <ScritturaIndizi
                   title="Indizio 2"
-                  text={`Il nome contiene ${randomPokemon.name.length} lettere`}
+                  text={`Il nome contiene ${
+                    includesDash(randomPokemon.name).length
+                  } lettere`}
                 />
               )}
               {sbloccati.includes("indizio3") && (
                 <ScritturaIndizi
                   title="Indizio 3"
                   text={`Il nome inizia per ${capitalizeFirstLetter(
-                    getFirstLetter(randomPokemon.name)
+                    getFirstLetter(includesDash(randomPokemon.name))
                   )} e finisce per ${capitalizeFirstLetter(
-                    getLastLetter(randomPokemon.name)
+                    getLastLetter(includesDash(randomPokemon.name))
                   )}`}
                 />
               )}
